@@ -1,25 +1,31 @@
 import React from "react";
-import { FaYoutube, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import { FaYoutube, FaLinkedin, FaEnvelope, FaGit, FaGithub } from "react-icons/fa";
 import { subText } from "../constants";
 import { styles } from "../styles";
 
 const Contact = () => {
   const contacts = [
     {
+      name: "Github",
+      icon: <FaGithub size={30} className="text-blue-700" />,
+      link: "https://github.com/Pranav2442",
+    },
+    {
       name: "LinkedIn",
       icon: <FaLinkedin size={30} className="text-blue-700" />,
       link: "https://www.linkedin.com/in/pranav-mailarpawar-529ab9203/",
-    },
-    {
-      name: "YouTube",
-      icon: <FaYoutube size={30} className="text-red-600" />,
-      link: "https://www.youtube.com/@pranavmailarpawar5900/videos",
     },
     {
       name: "Gmail",
       icon: <FaEnvelope size={30} className="text-orange-500" />,
       link: "mailto:pranavpawar2442@gmail.com",
     },
+    {
+      name: "YouTube",
+      icon: <FaYoutube size={30} className="text-red-600" />,
+      link: "https://www.youtube.com/@pranavmailarpawar5900/videos",
+    },
+    
   ];
 
   return (
