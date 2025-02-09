@@ -16,11 +16,11 @@ import {
       
     },
     {
-      title: "Python",
+      title: "Java",
        
     },
     {
-      title: "Java",
+      title: "Python",
        
     },
     {
@@ -48,6 +48,9 @@ import {
       
     },
     {
+      title: "ExtJs"
+    },
+    {
       title: "Springboot",
        
     },
@@ -56,12 +59,21 @@ import {
        
     },
     {
+      title: "Oracle DB"
+    },
+    {
+      title: "MongoDB"
+    },
+    {
       title: "Flutter",
        
     },
     {
       title: "Dart",
        
+    },
+    {
+      title: "AWS"
     },
     {
       title: "Redis",

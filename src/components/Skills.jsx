@@ -78,16 +78,6 @@ const SkillsCard = memo(({ index, title }) => {
           variants={prefersReducedMotion ? {} : animationVariants}
           className="h-full"
         >
-          <Tilt
-            options={{
-              max: 15,
-              scale: 1.05,
-              speed: 400,
-              glare: true,
-              "max-glare": 0.5,
-            }}
-            className="h-full will-change-transform"
-          >
             <div className="h-full bg-gradient-to-r from-blue-700 via-indigo-900 to-purple-900 p-[1px] rounded-[20px] shadow-lg backdrop-blur-sm">
               <div className="bg-tertiary rounded-[20px] py-3 px-4 h-[150px] flex items-center justify-center">
                 <h3 className="text-white text-sm sm:text-base font-bold text-center">
@@ -95,7 +85,6 @@ const SkillsCard = memo(({ index, title }) => {
                 </h3>
               </div>
             </div>
-          </Tilt>
         </motion.div>
       </Suspense>
     </div>
