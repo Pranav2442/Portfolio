@@ -1,5 +1,5 @@
 import React from "react";
-import { FaYoutube, FaLinkedin, FaEnvelope, FaGit, FaGithub } from "react-icons/fa";
+import { FaYoutube, FaLinkedin, FaEnvelope, FaGit, FaGithub, FaCamera, FaCameraRetro } from "react-icons/fa";
 import { subText } from "../constants";
 import { styles } from "../styles";
 
@@ -7,7 +7,7 @@ const Contact = () => {
   const contacts = [
     {
       name: "Github",
-      icon: <FaGithub size={30} className="text-blue-700" />,
+      icon: <FaGithub size={30} className="text-white" />,
       link: "https://github.com/Pranav2442",
     },
     {
@@ -19,6 +19,11 @@ const Contact = () => {
       name: "Gmail",
       icon: <FaEnvelope size={30} className="text-orange-500" />,
       link: "mailto:pranavpawar2442@gmail.com",
+    },
+    {
+      name: "Pixel Lens",
+      icon: <FaCameraRetro size={30} className="bg-gradient-to-r from-purple-500 to-pink-500" />,
+      link: "https://pixel-lens.netlify.app/",
     },
     {
       name: "YouTube",
