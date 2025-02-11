@@ -194,6 +194,10 @@ import {
       link: "https://youtube.com/shorts/lNQYnCKMiYw?feature=shared"
     },
     {
+      title: "Pixel Lens: Capture. Showcase. Inspire.",
+      link: "https://www.pixel-lens.netlify.app"
+    },
+    {
       title: "Tetris",
       link: "https://youtube.com/shorts/ti445FOaXG8?feature=shared"
     },
