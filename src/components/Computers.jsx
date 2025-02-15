@@ -13,12 +13,12 @@ function Model(props) {
     if (width <= 480) { // Mobile
       return {
         scale: 0.30,
-        yPosition: -7 // Lower position for mobile
+        yPosition: -8 // Lower position for mobile
       }
     } else if (width <= 768) { // Tablet
       return {
         scale: 0.30,
-        yPosition: -6.5
+        yPosition: -8
       }
     } else if (width <= 1024) { // Small laptop
       return {
