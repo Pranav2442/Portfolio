@@ -5,6 +5,7 @@ import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
 import("react-vertical-timeline-component/style.min.css");
 import React, { lazy, Suspense } from "react";
+import { GlowingEffect } from "./GlowingEffect";
 
 
 const VerticalTimeline = lazy(() => 
@@ -54,6 +55,16 @@ const ExperienceCard = React.memo(({ experience }) => {
           {experience.company_name}
         </p>
       </div>
+      <GlowingEffect
+          blur={1}
+          spread={50}
+          movementDuration={0.8}
+          glow={false}
+          disabled={false}
+          borderWidth={2}
+          inactiveZone={0.5}  
+          proximity={20}
+        />
 
       <ul className="mt-5 list-disc ml-5 space-y-2">
         {experience.points.map((point, index) => (

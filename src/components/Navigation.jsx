@@ -9,7 +9,7 @@ const Navigation = () => {
         <Link
           to='/'
           className='flex items-center gap-2'>
-          <img src={profile} className="h-10 w-10 object-contain"/>
+          <img src={profile} className="h-10 w-10 object-contain rounded-3xl"/>
           <p className='text-white text-[20px] font-bold cursor-pointer flex '>
             {name} &nbsp;
           </p>

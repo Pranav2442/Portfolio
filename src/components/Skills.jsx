@@ -1,28 +1,19 @@
-import React, { lazy, Suspense, memo, useEffect, useState, useMemo } from 'react';
-import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
-import { styles } from '../styles';
-import { textVariant } from '../utils/motion';
+import React, {
+  lazy,
+  Suspense,
+  memo,
+  useEffect,
+  useState,
+  useMemo,
+} from "react";
+import { motion, useReducedMotion, AnimatePresence } from "framer-motion";
+import { styles } from "../styles";
+import { textVariant } from "../utils/motion";
 import { SectionWrapper } from "../hoc";
-import { services } from '../constants';
-
-// Lazy load Tilt with preloading
-const Tilt = lazy(() => 
-  import('react-tilt').then(module => ({ default: module.Tilt }))
-);
-
-// Optimized placeholder
-const TiltPlaceholder = memo(() => (
-  <div className="w-[calc(50%-0.5rem)] md:w-[150px]">
-    <div className="w-full h-[150px] bg-tertiary rounded-[20px] opacity-50 animate-pulse">
-      <div className="h-full flex items-center justify-center">
-        <div className="w-2/3 h-4 bg-white/20 rounded" />
-      </div>
-    </div>
-  </div>
-));
+import { services } from "../constants";
 
 // Optimized InView hook that only triggers once
-const useInViewOnce = (threshold = 0.1, rootMargin = '0px') => {
+const useInViewOnce = (threshold = 0.1, rootMargin = "0px") => {
   const [ref, setRef] = useState(null);
   const [isInView, setIsInView] = useState(false);
 
@@ -52,41 +43,35 @@ const SkillsCard = memo(({ index, title }) => {
   const prefersReducedMotion = useReducedMotion();
   const [ref, isInView] = useInViewOnce(0.2);
 
-  const animationVariants = useMemo(() => ({
-    hidden: {
-      opacity: 0,
-      y: 20,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        damping: 25,
-        stiffness: 100,
-        delay: index * 0.1,
+  const animationVariants = useMemo(
+    () => ({
+      hidden: {
+        opacity: 0,
+        y: 20,
       },
-    }
-  }), [index]);
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: {
+          type: "spring",
+          damping: 25,
+          stiffness: 100,
+          delay: index * 0.1,
+        },
+      },
+    }),
+    [index]
+  );
 
   return (
     <div ref={ref} className="w-[calc(50%-0.5rem)] md:w-[150px]">
-      <Suspense fallback={<TiltPlaceholder />}>
-        <motion.div
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          variants={prefersReducedMotion ? {} : animationVariants}
-          className="h-full"
-        >
-            <div className="h-full bg-gradient-to-r from-blue-700 via-indigo-900 to-purple-900 p-[1px] rounded-[20px] shadow-lg backdrop-blur-sm">
-              <div className="bg-tertiary rounded-[20px] py-3 px-4 h-[150px] flex items-center justify-center">
-                <h3 className="text-white text-sm sm:text-base font-bold text-center">
-                  {title}
-                </h3>
-              </div>
-            </div>
-        </motion.div>
-      </Suspense>
+      <div className="h-full bg-gradient-to-r from-blue-700 via-indigo-900 to-purple-900 p-[1px] rounded-[20px] shadow-lg backdrop-blur-sm">
+        <div className="bg-tertiary rounded-[20px] py-3 px-4 h-[150px] flex items-center justify-center">
+          <h3 className="text-white text-sm sm:text-base font-bold text-center">
+            {title}
+          </h3>
+        </div>
+      </div>
     </div>
   );
 });
@@ -108,7 +93,7 @@ const SkillsGrid = memo(({ services }) => {
         {mobileRows.map((row, rowIndex) => (
           <div key={rowIndex} className="flex justify-center gap-4 mb-4">
             {row.map((service, index) => (
-              <SkillsCard 
+              <SkillsCard
                 key={service.title}
                 index={rowIndex * 2 + index}
                 {...service}
@@ -120,11 +105,7 @@ const SkillsGrid = memo(({ services }) => {
 
       <div className="hidden md:flex md:flex-wrap md:justify-center md:gap-4">
         {services.map((service, index) => (
-          <SkillsCard
-            key={service.title}
-            index={index}
-            {...service}
-          />
+          <SkillsCard key={service.title} index={index} {...service} />
         ))}
       </div>
     </div>
@@ -146,9 +127,7 @@ const Skills = () => {
         animate={isInView ? "show" : "hidden"}
         className="text-center"
       >
-        <p className={styles.sectionHeadText}>
-          Skills
-        </p>
+        <p className={styles.sectionHeadText}>Skills</p>
       </motion.div>
 
       <SkillsGrid services={memoizedServices} />
@@ -156,4 +135,4 @@ const Skills = () => {
   );
 };
 
-export default memo(SectionWrapper(Skills, 'about'));
+export default memo(SectionWrapper(Skills, "about"));
