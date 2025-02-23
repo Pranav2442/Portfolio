@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom"
 import { Navigation, StarBackground, } from "./components";
-import { Suspense, lazy } from "react";
+import { lazy } from "react";
 import AchievementsShowcase from "./components/AchievementsShowcase";
 import Tech from "./components/Tech";
 

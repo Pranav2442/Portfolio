@@ -109,7 +109,7 @@ const Experience = () => {
           className="w-24 h-1 bg-gradient-to-r from-violet-600 to-indigo-600 mx-auto mt-4"
           initial={{ width: 0 }}
           animate={{ width: 96 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
+          transition={{ delay: 0.2, duration: 0.2 }}
         />
       </motion.div>
 
