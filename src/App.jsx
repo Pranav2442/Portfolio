@@ -2,6 +2,8 @@ import { BrowserRouter } from "react-router-dom"
 import { Navigation, StarBackground, ThreeDimComp,   } from "./components";
 import { Suspense, lazy } from "react";
 import AchievementsShowcase from "./components/AchievementsShowcase";
+import Tech from "./components/Tech";
+
 
 // Lazy load components
 const Experience = lazy(() => import("./components/Experience"));
@@ -17,7 +19,8 @@ function App() {
         <div>
         <StarBackground/>
         <Navigation/>
-        <ThreeDimComp/>
+        {/* <ThreeDimComp/> */}
+        <Tech/>
         </div>
         <Experience/>
         <Skills/>
