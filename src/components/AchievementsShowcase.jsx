@@ -40,7 +40,7 @@ const AchievementsShowcase = () => {
       >
         <div className="relative inline-block">
           <motion.h2 
-            className="text-white text-5xl md:text-6xl lg:text-7xl font-bold mb-4"
+            className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 px-4"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.8 }}
