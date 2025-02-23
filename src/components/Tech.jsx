@@ -97,7 +97,7 @@ const Tech = () => {
     '// Transforming ideas into reality 🚀'
   ];
 
-  
+  // Add keyframe animations
   useEffect(() => {
     const keyframes = `
       @keyframes binaryRain {
@@ -116,6 +116,10 @@ const Tech = () => {
         0%, 100% { opacity: 0.8; }
         50% { opacity: 0.3; }
       }
+      @keyframes borderGlow {
+        0%, 100% { border-color: rgba(6, 182, 212, 0.3); }
+        50% { border-color: rgba(6, 182, 212, 0.1); }
+      }
     `;
     
     const style = document.createElement('style');
@@ -127,7 +131,6 @@ const Tech = () => {
     };
   }, []);
 
-  
   useEffect(() => {
     const interval = setInterval(() => {
       setBinaryStream(
@@ -162,8 +165,8 @@ const Tech = () => {
       {dialogues.map((dialogue, index) => (
         <motion.div
           key={index}
-          className={`absolute flex items-center gap-4 bg-gray-900/30 backdrop-blur-md 
-                     p-4 rounded-xl border border-white/5 cursor-pointer
+          className={`absolute flex items-center gap-2 sm:gap-4 bg-gray-900/30 backdrop-blur-md 
+                     p-2 sm:p-4 rounded-xl border border-white/5 cursor-pointer
                      hover:bg-gray-800/40 transition-colors duration-300
                      ${hoveredBox === index ? 'z-50 scale-110' : 'z-30'}`}
           initial={{ opacity: 0, y: 20 }}
@@ -186,33 +189,37 @@ const Tech = () => {
           onHoverStart={() => setHoveredBox(index)}
           onHoverEnd={() => setHoveredBox(null)}
         >
-          <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${dialogue.color}
+          <div className={`w-10 h-10 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-gradient-to-r ${dialogue.color}
                           flex items-center justify-center transform 
                           transition-transform duration-300
                           ${hoveredBox === index ? 'scale-110' : ''}`}>
             {React.createElement(dialogue.icon, {
-              size: 28,
+              size: window.innerWidth < 640 ? 20 : 28,
               className: "text-white"
             })}
           </div>
-          <div>
-            <h3 className="text-white font-bold text-lg">{dialogue.text}</h3>
-            <p className="text-white/70 text-sm">{dialogue.subtext}</p>
+          <div className="hidden sm:block">
+            <h3 className="text-white font-bold text-base lg:text-lg">{dialogue.text}</h3>
+            <p className="text-white/70 text-xs lg:text-sm">{dialogue.subtext}</p>
           </div>
         </motion.div>
       ))}
 
       <motion.div 
         className="w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
-                   border border-white/5 shadow-2xl z-40 relative group"
+                   border border-white/5 shadow-2xl z-40 relative group mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         
-        <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-xl" />
-        <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/30 rounded-tr-xl" />
-        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/30 rounded-bl-xl" />
-        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl" />
+        <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-xl"
+             style={{ animation: 'borderGlow 2s ease-in-out infinite' }} />
+        <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/30 rounded-tr-xl"
+             style={{ animation: 'borderGlow 2s ease-in-out infinite', animationDelay: '0.5s' }} />
+        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/30 rounded-bl-xl"
+             style={{ animation: 'borderGlow 2s ease-in-out infinite', animationDelay: '1s' }} />
+        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl"
+             style={{ animation: 'borderGlow 2s ease-in-out infinite', animationDelay: '1.5s' }} />
         
         
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -283,7 +290,6 @@ const Tech = () => {
 
           
           <div className="flex items-center gap-4 relative z-10">
-            
             <div className="flex items-center gap-2">
               <div className="relative">
                 <div className="w-2 h-2 rounded-full bg-purple-500" 
@@ -296,17 +302,21 @@ const Tech = () => {
           </div>
         </div>
 
-        <div className="p-6 font-mono text-[15px] relative">
-          <div className="absolute left-0 top-6 bottom-6 w-12 flex flex-col items-end pr-4 
+        <div className="p-3 sm:p-4 md:p-6 font-mono text-[12px] sm:text-[13px] md:text-[15px] relative overflow-x-auto">
+          
+          <div className="absolute left-0 top-6 bottom-6 w-8 sm:w-10 md:w-12 flex flex-col items-end pr-2 sm:pr-3 md:pr-4 
                         border-r border-white/5 bg-gradient-to-r from-transparent via-white/5 to-transparent">
             {codeContent.map((_, i) => (
-              <div key={i} className="h-6 text-[10px] font-light text-cyan-500/50">
-                {String(i + 1).padStart(3, '0')}
+              <div key={i} className="h-6 text-[10px] font-light text-cyan-500/50 relative group">
+                <span className="relative z-10">{String(i + 1).padStart(3, '0')}</span>
+                <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 
+                             transition-opacity rounded blur-sm" />
               </div>
             ))}
           </div>
 
-          <div className="pl-16">
+          
+          <div className="pl-8 sm:pl-12 md:pl-16 min-w-[300px] sm:min-w-[400px] md:min-w-[500px]">
             {codeContent.map((line, index) => (
               <motion.pre
                 key={index}
@@ -318,7 +328,7 @@ const Tech = () => {
                   line.includes('"') ? 'text-emerald-300' :
                   line.includes('//') ? 'text-gray-400' :
                   'text-white/90'
-                } relative group`}
+                } relative group hover:bg-white/5 rounded transition-colors duration-150`}
               >
                 <code className="relative z-10">
                   {index < currentLineIndex && line}
@@ -333,10 +343,10 @@ const Tech = () => {
                     </>
                   )}
                 </code>
+                
                 <motion.div
-                  
-                  className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 
-                           transition-opacity rounded"
+                  className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 
+                           transition-opacity rounded-sm"
                 />
               </motion.pre>
             ))}
@@ -344,9 +354,10 @@ const Tech = () => {
 
           
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent opacity-50" />
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.1),transparent_60%)]" 
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent opacity-50"
                  style={{ animation: 'glow 3s ease-in-out infinite' }} />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent opacity-30"
+                 style={{ animation: 'glow 4s ease-in-out infinite' }} />
           </div>
         </div>
 
@@ -357,6 +368,7 @@ const Tech = () => {
             initial={{ width: "0%" }}
             animate={{ width: isComplete ? "100%" : `${(currentLineIndex / codeContent.length) * 100}%` }}
           />
+          
           <motion.div
             className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
             animate={{
@@ -370,22 +382,14 @@ const Tech = () => {
             }}
           />
           
-          
-          <div className="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-cyan-500/20 to-transparent" 
-               style={{ transform: 'translateX(-1px)' }} />
-          <div className="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-purple-500/20 to-transparent" 
-               style={{ transform: 'translateX(1px)' }} />
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 blur-sm" />
         </div>
 
         
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.1),transparent_70%)]" />
-        </div>
+        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/0 via-white/5 to-purple-500/0 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </motion.div>
     </div>
   );
 };
 
 export default Tech;
-                  
