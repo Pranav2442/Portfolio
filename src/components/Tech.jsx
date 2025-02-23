@@ -223,7 +223,7 @@ const Tech = () => {
         
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        <div className="relative flex items-center gap-3 px-6 py-4 bg-black/10 border-b border-white/5">
+        <div className="relative flex items-center gap-3 px-4 h-8 sm:h-10 md:h-12 sm:px-6 bg-black/10 border-b border-white/5">
           
           <div className="absolute inset-0 overflow-hidden opacity-10">
             <div className="binary-rain">
@@ -265,11 +265,11 @@ const Tech = () => {
             </motion.div>
           </div>
 
-          <div className="flex-1 text-center flex items-center justify-center gap-2 relative z-10">
-            <Terminal size={16} className="text-white/50" />
-            <span className="text-sm text-white/50 font-mono">quantum_dev.ts</span>
-            <Binary size={14} className="text-cyan-400 hidden sm:block" />
-            <Zap size={14} className="text-yellow-400 hidden sm:block" />
+          <div className="flex-1 text-center flex items-center justify-center gap-1 sm:gap-2 relative z-10">
+            <Terminal size={14} className="text-white/50" />
+            <span className="text-xs sm:text-sm text-white/50 font-mono">quantum_dev.ts</span>
+            <Binary size={12} className="text-cyan-400 hidden sm:block" />
+            <Zap size={12} className="text-yellow-400 hidden sm:block" />
           </div>
 
           
@@ -287,11 +287,10 @@ const Tech = () => {
         </div>
 
         <div className="p-2 sm:p-4 md:p-6 font-mono text-[11px] sm:text-[13px] md:text-[15px] relative overflow-x-auto">
-          
-          <div className="absolute left-0 top-6 bottom-6 w-6 sm:w-8 md:w-12 flex flex-col items-end pr-1 sm:pr-2 md:pr-4 
-                        border-r border-white/5 bg-gradient-to-r from-transparent via-white/5 to-transparent">
+          <div className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 md:w-12 flex flex-col items-end pr-1 sm:pr-2 md:pr-4 
+                        border-r border-white/5 ">
             {codeContent.map((_, i) => (
-              <div key={i} className="min-h-[24px] sm:min-h-[24px] md:min-h-[24px] text-[10px] font-light text-cyan-500/50">
+              <div key={i} className="h-6 sm:h-6 md:h-6 flex items-center text-[10px] font-light text-cyan-500/50">
                 {String(i + 1).padStart(3, '0')}
               </div>
             ))}
