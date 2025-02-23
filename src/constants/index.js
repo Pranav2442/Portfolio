@@ -1,3 +1,15 @@
+import { Trophy, 
+  Rocket, 
+  Brain, 
+  Code,
+  Star,
+  Users,
+  Globe,
+  Award,
+  Medal,
+  Laptop,
+  Coffee,
+  Lightbulb } from 'lucide-react';
 import {
     
     bny,
@@ -214,7 +226,7 @@ import {
       link: "https://youtu.be/_WjZiyHExck?feature=shared"
     }, 
     {
-      title: "Sname Game",
+      title: "Snake Game",
       link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_built-the-snake-game-using-fluttera-remarkably-activity-7139238803285671936-uJva?utm_source=share&utm_medium=member_desktop"
     },
     {
@@ -227,7 +239,45 @@ import {
     },
   ];
 
+  const achievements = [
+    {
+      icon: Laptop,
+      description: "Successfully delivered over 20+ freelance projects worldwide, managing the entire development process from ideation to production, including websites, apps, and computer vision solutions",
+      color: "from-teal-500 to-emerald-500"
+    },
+    {
+      icon: Medal,
+      description: "5x Hackathon Winner",
+      color: "from-amber-500 to-yellow-500"
+    },
+    {
+      icon: Trophy,
+      description: "Chosen for prestigious Oxford Machine Learning Summer School (OxML 2024), 1 among few candidates",
+      color: "from-violet-600 to-indigo-600"
+    },
+    {
+      icon: Rocket,
+      description: "Selected for prestigious Linux Foundation Scholarship, one of only 1000 recipients worldwide",
+      color: "from-rose-500 to-orange-500"
+    },
+    {
+      icon: Brain,
+      description: "Qualified for semifinals of Flipkart Grid 5.0, ranking within the top 10 teams out of 400,000 participants",
+      color: "from-cyan-500 to-blue-500"
+    },
+    {
+      icon: Code,
+      description: "1400+ Rating (Specialist) on Codeforces, 4 Stars on Codechef",
+      color: "from-emerald-500 to-teal-500"
+    },
+    {
+      icon: Users,
+      description: "Led Team of 10+ Developers on Enterprise Project",
+      color: "from-purple-500 to-pink-500"
+    },
+  ];
+
   const name = "Pranav Mailarpawar"
   const subText = "App Developer | Fullstack Web developer"
   
-  export { services, experiences,  projects, name, subText, };
+  export { services, experiences,  projects, name, subText, achievements };

@@ -1,6 +1,4 @@
 import React, {
-  lazy,
-  Suspense,
   memo,
   useEffect,
   useState,
@@ -127,7 +125,12 @@ const Skills = () => {
         animate={isInView ? "show" : "hidden"}
         className="text-center"
       >
-        <p className={styles.sectionHeadText}>Skills</p>
+        <p className={styles.sectionHeadText}>Skills <motion.div 
+          className="w-24 h-1 bg-gradient-to-r from-violet-600 to-indigo-600 mx-auto mt-4"
+          initial={{ width: 0 }}
+          animate={{ width: 96 }}
+          transition={{ delay: 0.5, duration: 0.8 }}
+        /></p>
       </motion.div>
 
       <SkillsGrid services={memoizedServices} />

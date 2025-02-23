@@ -1,7 +1,7 @@
 import { BrowserRouter } from "react-router-dom"
 import { Navigation, StarBackground, ThreeDimComp,   } from "./components";
-
 import { Suspense, lazy } from "react";
+import AchievementsShowcase from "./components/AchievementsShowcase";
 
 // Lazy load components
 const Experience = lazy(() => import("./components/Experience"));
@@ -22,6 +22,7 @@ function App() {
         <Experience/>
         <Skills/>
         <Works/>
+        <AchievementsShowcase/>
         <div className="relative z-0">
           <Contact/>
         </div>
