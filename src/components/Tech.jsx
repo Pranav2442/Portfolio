@@ -219,39 +219,39 @@ const Tech = () => {
 
       {/* Code Editor */}
       <motion.div 
-        className="w-full max-w-3xl bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10"
+        className="w-full max-w-4xl bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
         {/* Editor Header */}
-        <div className="flex items-center gap-2 px-6 py-4 bg-black/30 border-b border-white/10">
-          <div className="flex gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500/50" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500/50" />
-            <div className="w-3 h-3 rounded-full bg-green-500/50" />
+        <div className="flex items-center gap-2 px-3 sm:px-6 py-3 sm:py-4 bg-black/30 border-b border-white/10">
+          <div className="flex gap-1 sm:gap-2">
+            <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500/50" />
+            <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500/50" />
+            <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500/50" />
           </div>
-          <div className="flex-1 text-center flex items-center justify-center gap-2">
-            <Terminal size={16} className="text-white/50" />
-            <span className="text-sm text-white/50">developer.ts</span>
-            <Flame size={16} className="text-orange-400" />
+          <div className="flex-1 text-center flex items-center justify-center gap-1 sm:gap-2">
+            <Terminal size={14} className="text-white/50 hidden sm:block" />
+            <span className="text-xs sm:text-sm text-white/50">developer.ts</span>
+            <Flame size={14} className="text-orange-400" />
           </div>
         </div>
 
         {/* Editor Content */}
-        <div className="p-6 font-mono text-[15px] relative">
-          <div className="absolute left-6 top-6 text-white/20 select-none">
+        <div className="p-3 sm:p-6 font-mono text-xs sm:text-sm md:text-[15px] relative">
+          <div className="absolute left-3 sm:left-6 top-3 sm:top-6 text-white/20 select-none">
             {codeContent.map((_, i) => (
-              <div key={i} className="h-6 text-right pr-4 font-light">
+              <div key={i} className="h-5 sm:h-6 text-right pr-2 sm:pr-4 font-light text-[10px] sm:text-xs">
                 {i + 1}
               </div>
             ))}
           </div>
 
-          <div className="pl-16">
+          <div className="pl-8 sm:pl-16">
             {codeContent.map((line, index) => (
               <motion.pre
                 key={index}
-                className={`h-6 ${
+                className={`h-5 sm:h-6 ${
                   line.includes('*/') ? 'text-gray-400' :
                   line.includes('*') ? 'text-blue-400' :
                   line.startsWith('const') ? 'text-purple-400' :
@@ -259,18 +259,18 @@ const Tech = () => {
                   line.includes('"') ? 'text-emerald-300' :
                   line.includes('//') ? 'text-gray-400' :
                   'text-white/90'
-                } font-medium`}
+                } font-medium overflow-x-auto whitespace-pre`}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <code>
+                <code className="block min-w-full">
                   {index < currentLineIndex && line}
                   {index === currentLineIndex && (
                     <>
                       {line.slice(0, currentCharIndex)}
                       <motion.span
-                        className="inline-block w-[2px] h-4 bg-white/50 relative top-[2px]"
+                        className="inline-block w-[2px] h-3 sm:h-4 bg-white/50 relative top-[2px]"
                         animate={{ opacity: [1, 0] }}
                         transition={{ duration: 0.6, repeat: Infinity }}
                       />
