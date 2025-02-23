@@ -1,5 +1,5 @@
 import { BrowserRouter } from "react-router-dom"
-import { Navigation, StarBackground, ThreeDimComp,   } from "./components";
+import { Navigation, StarBackground, } from "./components";
 import { Suspense, lazy } from "react";
 import AchievementsShowcase from "./components/AchievementsShowcase";
 import Tech from "./components/Tech";
@@ -19,7 +19,6 @@ function App() {
         <div>
         <StarBackground/>
         <Navigation/>
-        {/* <ThreeDimComp/> */}
         <Tech/>
         </div>
         <Experience/>
