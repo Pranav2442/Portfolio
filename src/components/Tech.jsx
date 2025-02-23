@@ -108,58 +108,6 @@ const Tech = () => {
     if (currentLineIndex < codeContent.length) {
       const line = codeContent[currentLineIndex];
       if (currentCharIndex < line.length) {
-        {/* Floating Dialogue Boxes */}
-        <div className="absolute inset-[-100px] md:inset-[-150px] lg:inset-[-200px] pointer-events-none z-20">
-          {dialogues.map((dialogue, index) => {
-            const angle = (index * (360 / dialogues.length)) * (Math.PI / 180);
-            const radius = {
-              base: 200,  // mobile
-              md: 300,    // medium screens
-              lg: 350     // large screens
-            };
-
-            return (
-              <motion.div
-                key={index}
-                className="absolute flex items-center gap-3 bg-black/40 backdrop-blur-sm
-                          p-3 lg:p-4 rounded-xl border border-white/10 hover:scale-110
-                          transition-transform duration-200"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ 
-                  opacity: 1,
-                  scale: 1,
-                  x: [0, 10, 0],
-                  y: [0, -5, 0]
-                }}
-                transition={{ 
-                  duration: 3,
-                  repeat: Infinity,
-                  delay: index * 0.2
-                }}
-                style={{
-                  top: "50%",
-                  left: "50%",
-                  transform: `translate(${Math.cos(angle) * radius.base}px, ${Math.sin(angle) * radius.base}px)`,
-                  "@media (min-width: 768px)": {
-                    transform: `translate(${Math.cos(angle) * radius.md}px, ${Math.sin(angle) * radius.md}px)`
-                  },
-                  "@media (min-width: 1024px)": {
-                    transform: `translate(${Math.cos(angle) * radius.lg}px, ${Math.sin(angle) * radius.lg}px)`
-                  }
-                }}
-              >
-                <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-r ${dialogue.color}
-                               flex items-center justify-center shadow-lg`}>
-                  <dialogue.icon size={20} className="text-white md:w-6 md:h-6" />
-                </div>
-                <div className="hidden lg:block">
-                  <h3 className="text-white font-semibold whitespace-nowrap">{dialogue.text}</h3>
-                  <p className="text-white/70 text-sm whitespace-nowrap">{dialogue.subtext}</p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div> 
         const timer = setTimeout(() => {
           setCurrentCharIndex(prev => prev + 1);
         }, 30);
@@ -241,7 +189,7 @@ const Tech = () => {
         <div className="p-3 sm:p-6 font-mono text-xs sm:text-sm md:text-[15px] relative">
           <div className="absolute left-3 sm:left-6 top-3 sm:top-6 text-white/20 select-none">
             {codeContent.map((_, i) => (
-              <div key={i} className="h-5 sm:h-6 text-right pr-2 sm:pr-4 font-light text-[10px] sm:text-xs">
+              <div key={i} className="min-h-5 sm:min-h-6 text-right pr-2 sm:pr-4 font-light text-[10px] sm:text-xs">
                 {i + 1}
               </div>
             ))}
@@ -251,7 +199,7 @@ const Tech = () => {
             {codeContent.map((line, index) => (
               <motion.pre
                 key={index}
-                className={`h-5 sm:h-6 ${
+                className={`min-h-5 sm:min-h-6 ${
                   line.includes('*/') ? 'text-gray-400' :
                   line.includes('*') ? 'text-blue-400' :
                   line.startsWith('const') ? 'text-purple-400' :
@@ -259,12 +207,12 @@ const Tech = () => {
                   line.includes('"') ? 'text-emerald-300' :
                   line.includes('//') ? 'text-gray-400' :
                   'text-white/90'
-                } font-medium overflow-x-auto whitespace-pre`}
+                } font-medium break-words whitespace-pre-wrap`}
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <code className="block min-w-full">
+                <code className="block w-full">
                   {index < currentLineIndex && line}
                   {index === currentLineIndex && (
                     <>
