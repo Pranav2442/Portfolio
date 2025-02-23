@@ -67,7 +67,7 @@ const Tech = () => {
     {
       icon: Globe,
       text: "Web & App Craftsman",
-      subtext: "Modern & Responsive",
+      subtext: "Modern • Responsive",
       color: "from-emerald-500 to-teal-600",
       position: { top: "75%", left: "60%" }
     }
@@ -97,7 +97,6 @@ const Tech = () => {
     '// Transforming ideas into reality 🚀'
   ];
 
-  // Add keyframe animations
   useEffect(() => {
     const keyframes = `
       @keyframes binaryRain {
@@ -206,12 +205,12 @@ const Tech = () => {
       ))}
 
       <motion.div 
-        className="w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
+        className="w-[99%] sm:w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
                    border border-white/5 shadow-2xl z-40 relative group mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        
+        {/* Glowing corner effects */}
         <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-xl"
              style={{ animation: 'borderGlow 2s ease-in-out infinite' }} />
         <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/30 rounded-tr-xl"
@@ -221,14 +220,14 @@ const Tech = () => {
         <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl"
              style={{ animation: 'borderGlow 2s ease-in-out infinite', animationDelay: '1.5s' }} />
         
-        
+        {/* Ambient glow effect */}
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         <div className="relative flex items-center gap-3 px-6 py-4 bg-black/10 border-b border-white/5">
-          
+          {/* Binary rain effect */}
           <div className="absolute inset-0 overflow-hidden opacity-10">
             <div className="binary-rain">
-              {Array.from({ length: 10 }).map((_, i) => (
+              {Array.from({ length: 20 }).map((_, i) => (
                 <div
                   key={i}
                   className="absolute text-[10px] text-cyan-500 font-mono whitespace-nowrap"
@@ -244,22 +243,7 @@ const Tech = () => {
             </div>
           </div>
 
-          
-          <div className="absolute inset-0 overflow-hidden">
-            <div 
-              className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent opacity-20"
-              style={{
-                animation: 'scanline 4s linear infinite'
-              }}
-            />
-          </div>
-
-          
-          <div className="absolute inset-0 overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-            <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
-          </div>
-
+          {/* Window controls */}
           <div className="flex gap-2 relative z-10">
             <motion.div 
               className="w-3 h-3 rounded-full bg-red-500/70 relative group"
@@ -284,8 +268,8 @@ const Tech = () => {
           <div className="flex-1 text-center flex items-center justify-center gap-2 relative z-10">
             <Terminal size={16} className="text-white/50" />
             <span className="text-sm text-white/50 font-mono">quantum_dev.ts</span>
-            <Binary size={14} className="text-cyan-400" />
-            <Zap size={14} className="text-yellow-400" />
+            <Binary size={14} className="text-cyan-400 hidden sm:block" />
+            <Zap size={14} className="text-yellow-400 hidden sm:block" />
           </div>
 
           
@@ -302,26 +286,23 @@ const Tech = () => {
           </div>
         </div>
 
-        <div className="p-3 sm:p-4 md:p-6 font-mono text-[12px] sm:text-[13px] md:text-[15px] relative overflow-x-auto">
+        <div className="p-2 sm:p-4 md:p-6 font-mono text-[11px] sm:text-[13px] md:text-[15px] relative overflow-x-auto">
           
-          <div className="absolute left-0 top-6 bottom-6 w-8 sm:w-10 md:w-12 flex flex-col items-end pr-2 sm:pr-3 md:pr-4 
+          <div className="absolute left-0 top-6 bottom-6 w-6 sm:w-8 md:w-12 flex flex-col items-end pr-1 sm:pr-2 md:pr-4 
                         border-r border-white/5 bg-gradient-to-r from-transparent via-white/5 to-transparent">
             {codeContent.map((_, i) => (
-              <div key={i} className="h-6 text-[10px] font-light text-cyan-500/50 relative group">
-                <span className="relative z-10">{String(i + 1).padStart(3, '0')}</span>
-                <div className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 
-                             transition-opacity rounded blur-sm" />
+              <div key={i} className="min-h-[24px] sm:min-h-[24px] md:min-h-[24px] text-[10px] font-light text-cyan-500/50">
+                {String(i + 1).padStart(3, '0')}
               </div>
             ))}
           </div>
 
           
-          <div className="pl-8 sm:pl-12 md:pl-16 min-w-[300px] sm:min-w-[400px] md:min-w-[500px]">
+          <div className="pl-8 sm:pl-12 md:pl-16 min-w-[280px] sm:min-w-[400px] md:min-w-[500px] max-w-full">
             {codeContent.map((line, index) => (
               <motion.pre
                 key={index}
-                className={`h-6 tracking-wide ${
-                  line.includes('*/') ? 'text-gray-400' :
+                className={`min-h-[24px] sm:min-h-[24px] md:min-h-[24px] py-0 sm:py-0 md:py-0 tracking-wide whitespace-pre-wrap break-all ${
                   line.includes('*') ? 'text-blue-400' :
                   line.startsWith('const') ? 'text-purple-400' :
                   line.includes(':') ? 'text-cyan-300' :
@@ -330,13 +311,13 @@ const Tech = () => {
                   'text-white/90'
                 } relative group hover:bg-white/5 rounded transition-colors duration-150`}
               >
-                <code className="relative z-10">
+                <code className="relative z-10 break-words overflow-hidden">
                   {index < currentLineIndex && line}
                   {index === currentLineIndex && (
                     <>
                       {line.slice(0, currentCharIndex)}
                       <motion.span
-                        className="inline-block w-[2px] h-4 bg-cyan-400 relative top-[2px]"
+                        className="inline-block w-[2px] h-3 sm:h-4 bg-cyan-400 relative top-[2px]"
                         animate={{ opacity: [1, 0] }}
                         transition={{ duration: 0.6, repeat: Infinity }}
                       />
