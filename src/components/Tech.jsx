@@ -16,69 +16,61 @@ import {
   Cloud,
   Layers,
   Cpu,
-  Shield
+  Shield,
+  Zap,
+  Binary
 } from 'lucide-react';
 
 const Tech = () => {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [currentCharIndex, setCurrentCharIndex] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [hoveredBox, setHoveredBox] = useState(null);
+  const [binaryStream, setBinaryStream] = useState('');
 
   const dialogues = [
     {
       icon: Code2,
       text: "Full Stack Development",
       subtext: "React • Ts • Node • Springboot • Extjs • DWR",
-      color: "from-violet-500 to-purple-600"
+      color: "from-violet-500 to-purple-600",
+      position: { top: "15%", left: "10%" }
     },
     {
       icon: Smartphone,
       text: "App Development",
       subtext: "Flutter • Dart",
-      color: "from-blue-500 to-cyan-500"
+      color: "from-blue-500 to-cyan-500",
+      position: { top: "25%", left: "65%" }
     },
     {
       icon: Database,
       text: "Backend Expert",
       subtext: "OracleDB • MongoDB • DynamoDB • Postgresql",
-      color: "from-green-500 to-emerald-600"
+      color: "from-green-500 to-emerald-600",
+      position: { top: "40%", left: "15%" }
     },
     {
       icon: Palette,
       text: "Creative Design",
       subtext: "UI/UX • Animations",
-      color: "from-pink-500 to-rose-500"
+      color: "from-pink-500 to-rose-500",
+      position: { top: "50%", left: "70%" }
     },
     {
       icon: Brain,
       text: "Problem Solver",
       subtext: "Clean & Efficient Code",
-      color: "from-amber-500 to-orange-600"
+      color: "from-amber-500 to-orange-600",
+      position: { top: "65%", left: "20%" }
     },
     {
       icon: Globe,
       text: "Web & App Craftsman",
       subtext: "Modern & Responsive",
-      color: "from-emerald-500 to-teal-600"
-    },
-    {
-      icon: Cloud,
-      text: "Cloud Solutions",
-      subtext: "AWS • Docker • Kubernetes",
-      color: "from-blue-400 to-indigo-500"
-    },
-    {
-      icon: Layers,
-      text: "Full Stack Apps",
-      subtext: "End-to-End Solutions",
-      color: "from-purple-500 to-pink-500"
-    },
-    {
-      icon: Cpu,
-      text: "Performance Optimization",
-      subtext: "Speed & Efficiency",
-      color: "from-red-500 to-orange-500"
-    },
+      color: "from-emerald-500 to-teal-600",
+      position: { top: "75%", left: "60%" }
+    }
   ];
 
   const codeContent = [
@@ -98,11 +90,52 @@ const Tech = () => {
     '  craftsmanship: {',
     '    focus: "pixel-perfect",',
     '    approach: "user-centric"',
-    '  }',
+    '  },',
+    '  mission: "Crafting Tomorrow\'s Tech Today"',
     '};',
     '',
     '// Transforming ideas into reality 🚀'
   ];
+
+  
+  useEffect(() => {
+    const keyframes = `
+      @keyframes binaryRain {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+      @keyframes scanline {
+        0% { transform: translateY(-100%); }
+        100% { transform: translateY(100%); }
+      }
+      @keyframes pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+      @keyframes glow {
+        0%, 100% { opacity: 0.8; }
+        50% { opacity: 0.3; }
+      }
+    `;
+    
+    const style = document.createElement('style');
+    style.textContent = keyframes;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBinaryStream(
+        Array.from({ length: 20 }, () => Math.random() > 0.5 ? '1' : '0').join('')
+      );
+    }, 100);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     if (currentLineIndex < codeContent.length) {
@@ -125,120 +158,234 @@ const Tech = () => {
   }, [currentLineIndex, currentCharIndex]);
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 relative">
-      {/* Floating Dialogue Boxes */}
+    <div className="w-full min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
       {dialogues.map((dialogue, index) => (
         <motion.div
           key={index}
-          className="absolute flex items-center gap-3 bg-black/40 backdrop-blur-sm
-                     p-3 lg:p-4 rounded-xl border border-white/10"
+          className={`absolute flex items-center gap-4 bg-gray-900/30 backdrop-blur-md 
+                     p-4 rounded-xl border border-white/5 cursor-pointer
+                     hover:bg-gray-800/40 transition-colors duration-300
+                     ${hoveredBox === index ? 'z-50 scale-110' : 'z-30'}`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ 
             opacity: 1, 
             y: 0,
-            x: index % 2 === 0 ? [0, 10, 0] : [0, -10, 0],
-            y: [0, -5, 0]
+            x: [0, hoveredBox === index ? 0 : 10, 0],
+            y: [0, hoveredBox === index ? 0 : -5, 0]
           }}
           transition={{ 
             duration: 3,
             repeat: Infinity,
+            repeatType: "reverse",
             delay: index * 0.2
           }}
           style={{
-            top: `${20 + (index * 15)}%`,
-            left: `${10 + (index % 3) * 30}%`,
-            transform: 'scale(0.8)',
-            '@media (min-width: 1024px)': {
-              transform: 'scale(1)',
-              left: index % 2 === 0 ? '5%' : '75%',
-            }
+            top: dialogue.position.top,
+            left: dialogue.position.left,
           }}
+          onHoverStart={() => setHoveredBox(index)}
+          onHoverEnd={() => setHoveredBox(null)}
         >
-          <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${dialogue.color}
-                          flex items-center justify-center`}>
-            <dialogue.icon size={24} className="text-white" />
+          <div className={`w-14 h-14 rounded-xl bg-gradient-to-r ${dialogue.color}
+                          flex items-center justify-center transform 
+                          transition-transform duration-300
+                          ${hoveredBox === index ? 'scale-110' : ''}`}>
+            {React.createElement(dialogue.icon, {
+              size: 28,
+              className: "text-white"
+            })}
           </div>
-          <div className="hidden lg:block">
-            <h3 className="text-white font-semibold">{dialogue.text}</h3>
+          <div>
+            <h3 className="text-white font-bold text-lg">{dialogue.text}</h3>
             <p className="text-white/70 text-sm">{dialogue.subtext}</p>
           </div>
         </motion.div>
       ))}
 
-      {/* Code Editor */}
       <motion.div 
-        className="w-full max-w-4xl bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden border border-white/10"
+        className="w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
+                   border border-white/5 shadow-2xl z-40 relative group"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        {/* Editor Header */}
-        <div className="flex items-center gap-2 px-3 sm:px-6 py-3 sm:py-4 bg-black/30 border-b border-white/10">
-          <div className="flex gap-1 sm:gap-2">
-            <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-red-500/50" />
-            <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-yellow-500/50" />
-            <div className="w-2 h-2 sm:w-3 sm:h-3 rounded-full bg-green-500/50" />
+        
+        <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-xl" />
+        <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/30 rounded-tr-xl" />
+        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/30 rounded-bl-xl" />
+        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl" />
+        
+        
+        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+        <div className="relative flex items-center gap-3 px-6 py-4 bg-black/10 border-b border-white/5">
+          
+          <div className="absolute inset-0 overflow-hidden opacity-10">
+            <div className="binary-rain">
+              {Array.from({ length: 10 }).map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute text-[10px] text-cyan-500 font-mono whitespace-nowrap"
+                  style={{
+                    left: `${i * 10}%`,
+                    animation: `binaryRain ${1 + Math.random() * 2}s linear infinite`,
+                    animationDelay: `${Math.random() * 2}s`
+                  }}
+                >
+                  {binaryStream}
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="flex-1 text-center flex items-center justify-center gap-1 sm:gap-2">
-            <Terminal size={14} className="text-white/50 hidden sm:block" />
-            <span className="text-xs sm:text-sm text-white/50">developer.ts</span>
-            <Flame size={14} className="text-orange-400" />
+
+          
+          <div className="absolute inset-0 overflow-hidden">
+            <div 
+              className="absolute inset-0 bg-gradient-to-b from-transparent via-white/5 to-transparent opacity-20"
+              style={{
+                animation: 'scanline 4s linear infinite'
+              }}
+            />
+          </div>
+
+          
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
+            <div className="absolute bottom-0 right-0 w-full h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent" />
+          </div>
+
+          <div className="flex gap-2 relative z-10">
+            <motion.div 
+              className="w-3 h-3 rounded-full bg-red-500/70 relative group"
+              whileHover={{ scale: 1.2 }}
+            >
+              <div className="absolute inset-0 rounded-full bg-red-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+            </motion.div>
+            <motion.div 
+              className="w-3 h-3 rounded-full bg-yellow-500/70 relative group"
+              whileHover={{ scale: 1.2 }}
+            >
+              <div className="absolute inset-0 rounded-full bg-yellow-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+            </motion.div>
+            <motion.div 
+              className="w-3 h-3 rounded-full bg-green-500/70 relative group"
+              whileHover={{ scale: 1.2 }}
+            >
+              <div className="absolute inset-0 rounded-full bg-green-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+            </motion.div>
+          </div>
+
+          <div className="flex-1 text-center flex items-center justify-center gap-2 relative z-10">
+            <Terminal size={16} className="text-white/50" />
+            <span className="text-sm text-white/50 font-mono">quantum_dev.ts</span>
+            <Binary size={14} className="text-cyan-400" />
+            <Zap size={14} className="text-yellow-400" />
+          </div>
+
+          
+          <div className="flex items-center gap-4 relative z-10">
+            
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <div className="w-2 h-2 rounded-full bg-purple-500" 
+                     style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+                <div className="absolute inset-0 rounded-full bg-purple-500 blur-sm opacity-50" 
+                     style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+              </div>
+              <span className="text-xs text-purple-500 font-mono">LIVE</span>
+            </div>
           </div>
         </div>
 
-        {/* Editor Content */}
-        <div className="p-3 sm:p-6 font-mono text-xs sm:text-sm md:text-[15px] relative">
-          <div className="absolute left-3 sm:left-6 top-3 sm:top-6 text-white/20 select-none">
+        <div className="p-6 font-mono text-[15px] relative">
+          <div className="absolute left-0 top-6 bottom-6 w-12 flex flex-col items-end pr-4 
+                        border-r border-white/5 bg-gradient-to-r from-transparent via-white/5 to-transparent">
             {codeContent.map((_, i) => (
-              <div key={i} className="min-h-5 sm:min-h-6 text-right pr-2 sm:pr-4 font-light text-[10px] sm:text-xs">
-                {i + 1}
+              <div key={i} className="h-6 text-[10px] font-light text-cyan-500/50">
+                {String(i + 1).padStart(3, '0')}
               </div>
             ))}
           </div>
 
-          <div className="pl-8 sm:pl-16">
+          <div className="pl-16">
             {codeContent.map((line, index) => (
               <motion.pre
                 key={index}
-                className={`min-h-5 sm:min-h-6 ${
+                className={`h-6 tracking-wide ${
                   line.includes('*/') ? 'text-gray-400' :
                   line.includes('*') ? 'text-blue-400' :
                   line.startsWith('const') ? 'text-purple-400' :
-                  line.includes(':') ? 'text-blue-300' :
+                  line.includes(':') ? 'text-cyan-300' :
                   line.includes('"') ? 'text-emerald-300' :
                   line.includes('//') ? 'text-gray-400' :
                   'text-white/90'
-                } font-medium break-words whitespace-pre-wrap`}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3 }}
+                } relative group`}
               >
-                <code className="block w-full">
+                <code className="relative z-10">
                   {index < currentLineIndex && line}
                   {index === currentLineIndex && (
                     <>
                       {line.slice(0, currentCharIndex)}
                       <motion.span
-                        className="inline-block w-[2px] h-3 sm:h-4 bg-white/50 relative top-[2px]"
+                        className="inline-block w-[2px] h-4 bg-cyan-400 relative top-[2px]"
                         animate={{ opacity: [1, 0] }}
                         transition={{ duration: 0.6, repeat: Infinity }}
                       />
                     </>
                   )}
                 </code>
+                <motion.div
+                  
+                  className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 
+                           transition-opacity rounded"
+                />
               </motion.pre>
             ))}
           </div>
+
+          
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent opacity-50" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.1),transparent_60%)]" 
+                 style={{ animation: 'glow 3s ease-in-out infinite' }} />
+          </div>
         </div>
 
-        <motion.div
-          className="h-[2px] bg-gradient-to-r from-purple-500 via-blue-500 to-emerald-500"
-          initial={{ width: "0%" }}
-          animate={{ width: isComplete ? "100%" : `${(currentLineIndex / codeContent.length) * 100}%` }}
-          transition={{ duration: 0.3 }}
-        />
+        
+        <div className="relative h-1">
+          <motion.div
+            className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"
+            initial={{ width: "0%" }}
+            animate={{ width: isComplete ? "100%" : `${(currentLineIndex / codeContent.length) * 100}%` }}
+          />
+          <motion.div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+            animate={{
+              x: [-100, 100],
+              opacity: [0, 1, 0]
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "linear"
+            }}
+          />
+          
+          
+          <div className="absolute inset-y-0 left-0 w-4 bg-gradient-to-r from-cyan-500/20 to-transparent" 
+               style={{ transform: 'translateX(-1px)' }} />
+          <div className="absolute inset-y-0 right-0 w-4 bg-gradient-to-l from-purple-500/20 to-transparent" 
+               style={{ transform: 'translateX(1px)' }} />
+        </div>
+
+        
+        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(56,189,248,0.1),transparent_70%)]" />
+        </div>
       </motion.div>
     </div>
   );
 };
 
 export default Tech;
+                  
