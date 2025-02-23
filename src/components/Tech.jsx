@@ -160,7 +160,7 @@ const Tech = () => {
   }, [currentLineIndex, currentCharIndex]);
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="w-full min-h-screen flex items-center justify-center p-4 relative overflow-hidden sm:p-4 md:p-6">
       {dialogues.map((dialogue, index) => (
         <motion.div
           key={index}
@@ -206,7 +206,7 @@ const Tech = () => {
 
       <motion.div 
         className="w-[99%] sm:w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
-                   border border-white/5 shadow-2xl z-40 relative group mx-auto"
+                   border border-white/5 shadow-2xl z-40 relative group mx-auto mt-15 sm:mt-0"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -220,20 +220,20 @@ const Tech = () => {
         <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl"
              style={{ animation: 'borderGlow 2s ease-in-out infinite', animationDelay: '1.5s' }} />
         
-        {/* Ambient glow effect */}
+        
         <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
         <div className="relative flex items-center gap-3 px-6 py-4 bg-black/10 border-b border-white/5">
-          {/* Binary rain effect */}
+          
           <div className="absolute inset-0 overflow-hidden opacity-10">
             <div className="binary-rain">
-              {Array.from({ length: 20 }).map((_, i) => (
+              {Array.from({ length: 50 }).map((_, i) => (
                 <div
                   key={i}
                   className="absolute text-[10px] text-cyan-500 font-mono whitespace-nowrap"
                   style={{
                     left: `${i * 10}%`,
-                    animation: `binaryRain ${1 + Math.random() * 2}s linear infinite`,
+                    animation: `binaryRain ${1 + Math.random() * 3}s linear infinite`,
                     animationDelay: `${Math.random() * 2}s`
                   }}
                 >
@@ -243,7 +243,7 @@ const Tech = () => {
             </div>
           </div>
 
-          {/* Window controls */}
+         
           <div className="flex gap-2 relative z-10">
             <motion.div 
               className="w-3 h-3 rounded-full bg-red-500/70 relative group"
