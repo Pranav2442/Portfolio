@@ -9,13 +9,6 @@ const ROTATION_RANGE = 15;
 const STACK_OFFSET = 20;
 
 
-const AnimatedBackground = () => (
-  <div className="absolute inset-0 overflow-hidden opacity-20">
-    <div className="absolute w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px] animate-grain" />
-  </div>
-);
-
-
 const FloatingParticles = () => (
   <div className="absolute inset-0 overflow-hidden pointer-events-none">
     {[...Array(20)].map((_, i) => (
@@ -43,7 +36,7 @@ const FloatingParticles = () => (
   </div>
 );
 
-
+// Animated glow effect
 const GlowEffect = () => (
   <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
     <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-blue-500/20 animate-gradient-xy rounded-[20px]" />
@@ -51,7 +44,7 @@ const GlowEffect = () => (
   </div>
 );
 
-
+// Shimmer animation effect
 const ShimmerEffect = () => (
   <div className="absolute inset-0 -rotate-12 overflow-hidden rounded-[20px]">
     <div className="absolute top-0 -left-[100%] h-full w-[200%] animate-[shimmer_4s_infinite] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -137,17 +130,16 @@ const SwipeIndicator = ({ x }) => {
 const InitialInstructions = () => (
   <motion.div 
     className="absolute bottom-4 left-0 w-full flex items-center justify-center pointer-events-none px-4"
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ delay: 0.5, duration: 0.5 }}
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ delay: 0.5 }}
   >
-    <div className="text-center bg-black/40 p-4 rounded-xl backdrop-blur-lg border border-white/10 relative overflow-hidden">
-      <AnimatedBackground />
+    <div className="flex flex-col items-center">
       <div className="flex justify-center items-start space-x-8 sm:space-x-12">
         <LeftArrow className="w-6 h-6 sm:w-8 sm:h-8 text-rose-400" />
         <RightArrow className="w-6 h-6 sm:w-8 sm:h-8 text-emerald-400" />
       </div>
-      <p className="text-white/90 text-xs sm:text-sm mt-3 font-light relative z-10">
+      <p className="text-white/90 text-xs sm:text-sm mt-3 font-light">
         Swipe right to watch, left to skip
       </p>
     </div>
@@ -169,7 +161,7 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
         transition: { 
           duration: 0.6,
           delay: index * 0.15,
-          ease: [0.16, 1, 0.3, 1], // Custom spring animation
+          ease: [0.16, 1, 0.3, 1], 
         }
       });
     }
@@ -243,8 +235,8 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
         <div className="w-full h-full bg-gradient-to-br from-violet-600 via-indigo-700 to-blue-800 p-[1px] rounded-[20px] shadow-lg shadow-purple-900/20 relative z-10">
           <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-[20px] py-3 px-4 sm:px-6 h-full flex justify-evenly items-center flex-col relative overflow-hidden backdrop-blur-sm">
             <ShimmerEffect />
-            <FloatingParticles />
-            <AnimatedBackground />
+            
+            {window.innerWidth > 768 && <FloatingParticles />}
             
             <motion.div 
               className="relative z-10 text-center w-full"
@@ -255,11 +247,11 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
               <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 text-base sm:text-lg md:text-xl font-bold mb-2">
                 {project.title}
               </h3>
-              <div className="px-2 sm:px-4 py-2 rounded-xl bg-white/5 backdrop-blur-md border border-white/10">
+              
                 <p className="text-white/80 text-xs sm:text-sm font-light line-clamp-3">
                   {project.description}
                 </p>
-              </div>
+              
             </motion.div>
             
             {index === 0 && <SwipeIndicator x={x} />}
@@ -392,7 +384,7 @@ const Projects = () => {
   );
 };
 
-
+// Add keyframe animations
 const style = document.createElement('style');
 style.textContent = `
   @keyframes shimmer {
@@ -405,28 +397,26 @@ style.textContent = `
   }
 
   @keyframes gradient-xy {
-    0% {
+    0%, 100% {
       background-position: 0% 50%;
     }
     50% {
       background-position: 100% 50%;
     }
-    100% {
-      background-position: 0% 50%;
-    }
   }
 
-  @keyframes grain {
-    0%, 100% { transform: translate(0, 0) }
-    10% { transform: translate(-2%, -2%) }
-    20% { transform: translate(2%, 2%) }
-    30% { transform: translate(-1%, 1%) }
-    40% { transform: translate(1%, -1%) }
-    50% { transform: translate(-2%, 2%) }
-    60% { transform: translate(2%, -2%) }
-    70% { transform: translate(-1%, -1%) }
-    80% { transform: translate(1%, 1%) }
-    90% { transform: translate(-2%, -2%) }
+  @keyframes float {
+    0% {
+      transform: translateY(0px);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
   }
 `;
 document.head.appendChild(style);
