@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { SectionWrapper } from '../hoc';
-import { achievements } from '../constants';
-
+import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
+import { SectionWrapper } from "../hoc";
+import { achievements } from "../constants";
+import { textVariant } from "../utils/motion";
 
 const AchievementsShowcase = () => {
   const [rows, setRows] = useState([]);
@@ -18,8 +18,8 @@ const AchievementsShowcase = () => {
     };
 
     updateLayout();
-    window.addEventListener('resize', updateLayout);
-    return () => window.removeEventListener('resize', updateLayout);
+    window.addEventListener("resize", updateLayout);
+    return () => window.removeEventListener("resize", updateLayout);
   }, []);
 
   useEffect(() => {
@@ -32,28 +32,47 @@ const AchievementsShowcase = () => {
 
   return (
     <div className="w-full py-10">
-      <motion.div 
-        className="text-center mb-16"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+      <motion.div
+        variants={textVariant()}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
+        className="relative"
       >
-        <div className="relative inline-block">
-          <motion.h2 
-            className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 px-4"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
-            Achievements
-          </motion.h2>
-        </div>
-        <motion.div 
-          className="w-24 h-1 bg-gradient-to-r from-violet-600 to-indigo-600 mx-auto mt-4"
-          initial={{ width: 0 }}
-          animate={{ width: 96 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-blue-500/20 blur-3xl -z-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
         />
+
+        <motion.h2
+          className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Achievements.
+        </motion.h2>
+
+        <motion.div
+          className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-violet-500 to-blue-500 mx-auto mt-3 sm:mt-4 rounded-full relative overflow-hidden mb-5"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: "100%", opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <motion.div
+            className="absolute inset-0 bg-white/50"
+            animate={{
+              x: ["-100%", "100%"],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 2,
+              ease: "linear",
+            }}
+          />
+        </motion.div>
       </motion.div>
 
       {rows.map((row, rowIndex) => (
@@ -63,23 +82,27 @@ const AchievementsShowcase = () => {
               key={index}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }} 
+              viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ scale: 1.05, y: -5 }}
               className={`relative group flex-1 min-w-[280px]`}
             >
-              <div className={`
+              <div
+                className={`
                 absolute inset-0 bg-gradient-to-r ${achievement.color}
                 rounded-xl opacity-0 group-hover:opacity-20 blur-xl
                 transition-all duration-500 -z-10
-              `} />
-              
-              <div className="h-full rounded-xl p-6
+              `}
+              />
+
+              <div
+                className="h-full rounded-xl p-6
                             border border-white/10 group-hover:border-white/20
                             transition-all duration-300
-                            backdrop-blur-sm bg-white/5">
+                            backdrop-blur-sm bg-white/5"
+              >
                 <div className="flex flex-col items-center text-center gap-4">
-                  <motion.div 
+                  <motion.div
                     className={`
                       w-16 h-16 rounded-lg bg-gradient-to-r ${achievement.color}
                       flex items-center justify-center
@@ -91,9 +114,11 @@ const AchievementsShowcase = () => {
                   >
                     <achievement.icon className="w-8 h-8 text-white" />
                   </motion.div>
-                  
-                  <p className="text-white/80 text-lg font-medium leading-tight
-                               group-hover:text-white transition-colors duration-300">
+
+                  <p
+                    className="text-white/80 text-lg font-medium leading-tight
+                               group-hover:text-white transition-colors duration-300"
+                  >
                     {achievement.description}
                   </p>
                 </div>
