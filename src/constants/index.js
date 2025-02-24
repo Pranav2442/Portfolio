@@ -125,7 +125,7 @@ import {
       company_name: "BNY",
       icon: bny,
       iconBg: "#E6DEDD",
-      date: "May 2023 - Jyly 2023",
+      date: "May 2023 - July 2023",
       points: [
         "Developed APIs with Google Remote Procedure Call (gRPC), achieving 2-4 times faster communication. Utilized protocol buffers and HTTP2 for efficient data transmission. Integrated APIs with an Oracle database",
         "Implemented RESTful Services using Spring Boot, integrated them with an Oracle database",
