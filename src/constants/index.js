@@ -159,83 +159,103 @@ import {
   const projects = [
     {
       title: "Glide Game Controller",
-      link: "https://www.youtube.com/watch?v=Po408KwbK0w"
+      link: "https://www.youtube.com/watch?v=Po408KwbK0w",
+      description: "Play beyond the controller—immerse yourself in a game powered by your own body movements!"
     },
     {
       title: "Stereo Reconstruction",
-      link: "https://www.youtube.com/watch?v=QJsXeMzD9Mk"
+      link: "https://www.youtube.com/watch?v=QJsXeMzD9Mk",
+      description: "Bring your photos to life—turn any 2D image into a stunning 3D masterpiece!"
     },
     {
       title: "Air Cursor",
-      link: "https://www.youtube.com/watch?v=yku03k24dVg"
+      link: "https://www.youtube.com/watch?v=yku03k24dVg",
+      description: "Control your laptop with just a wave of your fingers—no touch needed!"
     },
     {
       title: "Center Stage",
-      link: "https://www.youtube.com/watch?v=nUB4Y1XOm0c"
+      link: "https://www.youtube.com/watch?v=nUB4Y1XOm0c",
+      description: "Bring Apple's smart camera tracking to Windows—stay perfectly framed in video calls, no matter how much you move!"
     },
     {
       title: "Air Doodle",
-      link: "https://www.youtube.com/watch?v=HS0uuw5u1Xc"
+      link: "https://www.youtube.com/watch?v=HS0uuw5u1Xc",
+      description: "Paint in the air with your fingers—watch your artwork come to life on screen!"
     },
     {
       title: "Harry's cloak",
-      link: "https://www.youtube.com/watch?v=dPxPZpY7Xsw"
+      link: "https://www.youtube.com/watch?v=dPxPZpY7Xsw",
+      description: "Step into the wizarding world—experience the magic of Harry Potter’s invisibility cloak, brought to life!"
     },
     {
       title: "Dynamic Stylus Snake Game",
       link: "https://www.youtube.com/watch?v=DQsVVHZf7to",
+      description: "Reimagine the classic Snake game—turn any object into a stylus, let your computer track it, and glide your snake to victory in a whole new way!"
     }, 
     {
       title: "Image Stitcher",
-      link: "https://www.youtube.com/watch?v=DhkmTGUUFmo"
+      link: "https://www.youtube.com/watch?v=DhkmTGUUFmo",
+      description: "Piece it together seamlessly—our smart algorithm stitches scattered image fragments into one perfect masterpiece!"
     },
     {
       title: "Image Finder",
-      link: "https://www.youtube.com/watch?v=WJLgMevwS34"
+      link: "https://www.youtube.com/watch?v=WJLgMevwS34",
+      description: "Effortlessly find visually similar images—our smart algorithm scans and matches the perfect lookalikes for any image you choose!"
     },
     {
       title: "Smart Speaker",
-      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_project-activity-6763122737281155072-Xy1O?utm_source=share&utm_medium=member_desktop"
+      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_project-activity-6763122737281155072-Xy1O?utm_source=share&utm_medium=member_desktop",
+      description: "Turned old electronic scraps into a smart speaker—powered by Arduino, built with creativity"
     },
     {
       title: "Video Live Streaming platform",
-      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_i-built-a-streaming-platform-utilizing-nodejs-activity-7180824368699117568-_X0Z?utm_source=share&utm_medium=member_desktop"
+      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_i-built-a-streaming-platform-utilizing-nodejs-activity-7180824368699117568-_X0Z?utm_source=share&utm_medium=member_desktop",
+      description: "Seamless live streaming—customize your endpoint and go live anywhere, effortlessly!"
     },
     {
       title: "Photo Editor",
-      link: "https://youtube.com/shorts/lNQYnCKMiYw?feature=shared"
+      link: "https://youtube.com/shorts/lNQYnCKMiYw?feature=shared",
+      description: "Unleash your creativity—edit, enhance, and transform your photos like a pro!"
     },
     {
       title: "Pixel Lens: Capture. Showcase. Inspire.",
-      link: "https://www.pixel-lens.netlify.app"
+      link: "https://www.pixel-lens.netlify.app",
+      description: "A dedicated space for photographers—share the moments you poured your heart into capturing!"
     },
     {
       title: "Tetris",
-      link: "https://youtube.com/shorts/ti445FOaXG8?feature=shared"
+      link: "https://youtube.com/shorts/ti445FOaXG8?feature=shared",
+      description: "Relive the childhood magic—classic Tetris, just like on those tiny black handheld consoles"
     },
     {
       title: "Connect 4",
-      link: "https://youtube.com/shorts/uXUiXsiXdS8?feature=shared"
+      link: "https://youtube.com/shorts/uXUiXsiXdS8?feature=shared",
+      description: "Bringing back the classroom nostalgia—play Connect 4 just like the good old days, when notebooks were game boards and every class was a battle of wits!"
     }, 
     {
       title: "Pacman",
-      link: "https://youtu.be/Nu1oC0VuzEI?feature=shared"
+      link: "https://youtu.be/Nu1oC0VuzEI?feature=shared",
+      description: "Bringing back the arcade magic—classic Pac-Man fun, just like you remember!"
     },
     {
       title: "Fruit Ninja",
-      link: "https://youtu.be/_WjZiyHExck?feature=shared"
+      link: "https://youtu.be/_WjZiyHExck?feature=shared",
+      description: "Slice, dice, and relive the thrill—classic Fruit Ninja fun, reimagined!"
     }, 
     {
       title: "Snake Game",
-      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_built-the-snake-game-using-fluttera-remarkably-activity-7139238803285671936-uJva?utm_source=share&utm_medium=member_desktop"
+      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_built-the-snake-game-using-fluttera-remarkably-activity-7139238803285671936-uJva?utm_source=share&utm_medium=member_desktop",
+      description: "Relive the 90s nostalgia—classic Snake game, just like your old Nokia!"
     },
     {
       title: "Flappy Bird",
-      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_using-flutter-and-the-flame-game-engine-activity-7139828629806489600-TId8?utm_source=share&utm_medium=member_desktop"
+      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_using-flutter-and-the-flame-game-engine-activity-7139828629806489600-TId8?utm_source=share&utm_medium=member_desktop",
+      description: "Bringing back the nostalgia—classic Flappy Bird fun, reborn!"
     },
     {
       title: "Dino Game",
-      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_i-built-the-clone-of-dino-game-using-the-activity-7143633608623206400-n5st?utm_source=share&utm_medium=member_desktop"
+      link: "https://www.linkedin.com/posts/pranav-mailarpawar-529ab9203_i-built-the-clone-of-dino-game-using-the-activity-7143633608623206400-n5st?utm_source=share&utm_medium=member_desktop",
+      description: "Play the Chrome Dino game anytime—no need to wait for the internet to go down!"
     },
   ];
 
