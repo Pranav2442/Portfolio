@@ -1,30 +1,23 @@
-import React, { lazy, Suspense, useMemo } from "react";
+import React, { lazy, Suspense, useMemo, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionWrapper } from "../hoc";
 import { experiences } from "../constants";
 import { textVariant } from "../utils/motion";
 import "react-vertical-timeline-component/style.min.css";
 
-// Load components only once
-const VerticalTimeline = lazy(() => {
-  const component = import("react-vertical-timeline-component").then(
-    (module) => ({
-      default: module.VerticalTimeline,
-    })
-  );
-  return component;
-});
+const VerticalTimeline = lazy(() => 
+  import("react-vertical-timeline-component").then(module => ({
+    default: module.VerticalTimeline
+  }))
+);
 
-const VerticalTimelineElement = lazy(() => {
-  const component = import("react-vertical-timeline-component").then(
-    (module) => ({
-      default: module.VerticalTimelineElement,
-    })
-  );
-  return component;
-});
+const VerticalTimelineElement = lazy(() => 
+  import("react-vertical-timeline-component").then(module => ({
+    default: module.VerticalTimelineElement
+  }))
+);
 
-const ExperienceCard = React.memo(({ experience }) => {
+const ExperienceCard = memo(({ experience }) => {
   return (
     <VerticalTimelineElement
       contentStyle={{
@@ -58,9 +51,17 @@ const ExperienceCard = React.memo(({ experience }) => {
       }
     >
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={{
+          hidden: { opacity: 0, y: 20 },
+          visible: { 
+            opacity: 1, 
+            y: 0,
+            transition: { duration: 0.5 }
+          }
+        }}
         className="group"
       >
         <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
@@ -74,9 +75,20 @@ const ExperienceCard = React.memo(({ experience }) => {
           {experience.points.map((point, index) => (
             <motion.li
               key={`experience-point-${index}`}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: { opacity: 0, x: -20 },
+                visible: { 
+                  opacity: 1, 
+                  x: 0,
+                  transition: { 
+                    duration: 0.3, 
+                    delay: index * 0.1 
+                  }
+                }
+              }}
               className="flex items-start space-x-2 text-gray-300 hover:text-white transition-colors duration-300"
             >
               <span className="inline-block w-1.5 h-1.5 mt-2 rounded-full bg-purple-500 ring-4 ring-purple-500/20" />
@@ -91,6 +103,13 @@ const ExperienceCard = React.memo(({ experience }) => {
       </motion.div>
     </VerticalTimelineElement>
   );
+}, (prevProps, nextProps) => {
+  return (
+    prevProps.experience.title === nextProps.experience.title &&
+    prevProps.experience.company_name === nextProps.experience.company_name &&
+    prevProps.experience.date === nextProps.experience.date &&
+    JSON.stringify(prevProps.experience.points) === JSON.stringify(nextProps.experience.points)
+  );
 });
 
 ExperienceCard.displayName = "ExperienceCard";
@@ -101,15 +120,13 @@ const LoadingFallback = () => (
   </div>
 );
 
-const Experience = () => {
-  // Memoize experiences to prevent unnecessary re-renders
-  const memoizedExperiences = useMemo(
-    () =>
-      experiences.map((experience, index) => ({
-        ...experience,
-        key: `experience-${index}`,
-      })),
-    []
+const Experience = memo(() => {
+  const memoizedExperiences = useMemo(() => 
+    experiences.map((experience, index) => ({
+      ...experience,
+      key: `experience-${index}`,
+    })),
+    [] 
   );
 
   return (
@@ -158,19 +175,19 @@ const Experience = () => {
       </motion.div>
 
       <div className="mt-10 md:mt-16 lg:mt-20">
-        <AnimatePresence>
-          <Suspense fallback={<LoadingFallback />}>
-            <VerticalTimeline animate={true}>
-              {memoizedExperiences.map((experience) => (
-                <ExperienceCard key={experience.key} experience={experience} />
-              ))}
-            </VerticalTimeline>
-          </Suspense>
-        </AnimatePresence>
+        <Suspense fallback={<LoadingFallback />}>
+          <VerticalTimeline animate={true}>
+            {memoizedExperiences.map((experience) => (
+              <ExperienceCard 
+                key={experience.key} 
+                experience={experience} 
+              />
+            ))}
+          </VerticalTimeline>
+        </Suspense>
       </div>
     </div>
   );
-};
+}, () => true); 
 
-// Wrap with SectionWrapper and export
-export default React.memo(SectionWrapper(Experience, "work"));
+export default SectionWrapper(Experience, "work");
