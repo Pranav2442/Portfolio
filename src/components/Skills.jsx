@@ -342,32 +342,21 @@ const SkillsCard = memo(({ index, title }) => {
   const Icon = SkillIcons[title];
 
   return (
-    <div className="group relative h-[130px] xs:h-[140px] sm:h-[160px] lg:h-[180px] cursor-pointer">
-      <div className="absolute inset-0 bg-[rgba(15,23,42,0.85)] backdrop-blur-md rounded-xl overflow-hidden border border-slate-700/30">
+    <div 
+      ref={ref}
+      className="group relative h-[130px] xs:h-[140px] sm:h-[160px] lg:h-[180px] cursor-pointer perspective-1000"
+    >
+      <div className="absolute inset-0 bg-[rgba(17,24,39,0.8)] backdrop-blur-md rounded-xl overflow-hidden border border-slate-700/30 transition-all duration-300 group-hover:border-purple-500/50">
         <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-          <div className="absolute w-full h-full rounded-full bg-blue-500/10 blur-2xl -top-1/2 -right-1/2 group-hover:translate-x-10 group-hover:translate-y-10 transition-transform duration-1000"></div>
-          <div className="absolute w-full h-full rounded-full bg-purple-500/10 blur-2xl -bottom-1/2 -left-1/2 group-hover:-translate-x-10 group-hover:-translate-y-10 transition-transform duration-1000"></div>
-        </div>
-
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-700">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage:
-                "linear-gradient(90deg, #4f46e5 1px, transparent 1px), linear-gradient(180deg, #4f46e5 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-            }}
-          ></div>
+          <div className="absolute w-full h-full rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-2xl -top-1/2 -right-1/2 group-hover:translate-x-10 group-hover:translate-y-10 transition-transform duration-1000"></div>
         </div>
       </div>
 
       <div className="relative h-full p-3 xs:p-4 sm:p-5 lg:p-6 flex flex-col items-center justify-center space-y-2 xs:space-y-3 sm:space-y-4">
         <div className="relative group-hover:-translate-y-1 transition-transform duration-500 scale-75 xs:scale-90 sm:scale-100">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500"></div>
+          <div className="absolute -inset-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500"></div>
 
-          <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full opacity-0 group-hover:opacity-100 animate-spin-slow"></div>
-
-          <div className="relative bg-slate-900/80 backdrop-blur-sm p-4 rounded-full border border-slate-700/50 group-hover:border-blue-500/50 transition-colors duration-500">
+          <div className="relative bg-[rgba(15,23,42,0.8)] backdrop-blur-sm p-4 rounded-full border border-slate-700/50 group-hover:border-violet-500/50 transition-colors duration-500">
             <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-500">
               {Icon && <Icon />}
             </div>
@@ -379,27 +368,7 @@ const SkillsCard = memo(({ index, title }) => {
             {title}
           </h3>
 
-          <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 group-hover:w-full transition-all duration-500"></div>
-        </div>
-
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-blue-500/20 rounded-full opacity-0 group-hover:animate-ripple"></div>
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-purple-500/20 rounded-full opacity-0 group-hover:animate-ripple-delayed"></div>
-        </div>
-
-        <div className="absolute inset-0 overflow-hidden opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-          {[...Array(8)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-1 bg-white rounded-full animate-float"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${i * 0.2}s`,
-                animationDuration: `${2 + Math.random() * 2}s`,
-              }}
-            ></div>
-          ))}
+          <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-violet-500 to-blue-500 group-hover:w-full transition-all duration-500"></div>
         </div>
       </div>
     </div>
@@ -472,53 +441,18 @@ const Skills = () => {
       </div>
 
       <style jsx global>{`
-        @keyframes ripple {
-          0% {
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 1;
-          }
-          100% {
-            transform: translate(-50%, -50%) scale(4);
-            opacity: 0;
-          }
-        }
-
         @keyframes float {
-          0%,
-          100% {
-            transform: translate(0, 0);
-          }
-          50% {
-            transform: translate(var(--tx, 5px), var(--ty, -5px));
-          }
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-10px); }
         }
 
-        .animate-ripple {
-          animation: ripple 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+        .perspective-1000 {
+          perspective: 1000px;
         }
 
-        .animate-ripple-delayed {
-          animation: ripple 1s cubic-bezier(0, 0, 0.2, 1) infinite;
-          animation-delay: 0.2s;
-        }
-
-        .animate-spin-slow {
-          animation: spin 4s linear infinite;
-        }
-
-        @keyframes spin {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-
-        .animate-float {
-          --tx: ${Math.random() * 10 - 5}px;
-          --ty: ${Math.random() * 10 - 5}px;
-          animation: float 3s ease-in-out infinite;
+        .group:hover {
+          transform: rotateX(4deg) rotateY(-4deg);
+          transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
       `}</style>
     </div>
