@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, useMotionValue, useAnimation, useTransform, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '../hoc';
 import { textVariant } from '../utils/motion';
@@ -220,11 +220,11 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
     }
   }, [index, isMobile, controls]);
 
-  const handleSwipe = async (direction) => {
+  const handleSwipe = (direction) => {
     if (direction === 'right') {
       window.open(project.link, "_blank");
     }
-    onSwipe(direction);
+    if (onSwipe) onSwipe(direction);
   };
 
   const handleDragEnd = async (_, info) => {
@@ -318,11 +318,11 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
 const ProjectGridItem = ({ project, index }) => {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ 
-        delay: index * 0.03, 
-        duration: 0.4,
+        delay: Math.min(index * 0.03, 0.3), 
+        duration: 0.3,
         ease: [0.25, 0.1, 0.25, 1]
       }}
       whileHover={{ y: -6, scale: 1.02 }}
@@ -395,6 +395,78 @@ const ProjectGridItem = ({ project, index }) => {
   );
 };
 
+const ProjectStack = ({ projects: initialProjects }) => {
+  const [projects, setProjects] = useState(initialProjects);
+  const [isFirstInteraction, setIsFirstInteraction] = useState(true);
+  const [isRefilling, setIsRefilling] = useState(false);
+  const [containerHeight, setContainerHeight] = useState(400);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (window.innerWidth < 640) {
+        setContainerHeight(300);
+      } else if (window.innerWidth < 1024) {
+        setContainerHeight(350);
+      } else {
+        setContainerHeight(400);
+      }
+    };
+
+    updateHeight();
+    const resizeHandler = (event) => {
+      updateHeight();
+    };
+    window.addEventListener('resize', resizeHandler);
+    return () => window.removeEventListener('resize', resizeHandler);
+  }, []);
+
+  const handleSwipe = (direction) => {
+    setIsFirstInteraction(false);
+    setProjects((prev) => {
+      const remaining = prev.slice(1);
+      if (remaining.length === 0) {
+        setTimeout(() => {
+          setIsRefilling(true);
+          setProjects(initialProjects);
+          setTimeout(() => {
+            setIsRefilling(false);
+          }, initialProjects.length * 150 + 600);
+        }, 400);
+      }
+      return remaining;
+    });
+  };
+
+  return (
+    <div 
+      className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-md lg:max-w-lg mx-auto mt-8" 
+      style={{ height: containerHeight }}
+    >
+      <div className="relative w-full h-full">
+        {projects.slice(0, 6).map((project, index) => {
+          const offsetX = -index * (window.innerWidth < 640 ? STACK_OFFSET * 0.7 : STACK_OFFSET);
+          const offsetY = index * (window.innerWidth < 640 ? STACK_OFFSET/3 : STACK_OFFSET/2);
+          const scale = 1 - index * (window.innerWidth < 640 ? 0.015 : 0.02);
+
+          return (
+            <ProjectCard
+              key={`${project.title}-${isRefilling ? 'refill' : 'normal'}-${index}`}
+              project={project}
+              index={index}
+              isFirstInteraction={isFirstInteraction}
+              isRefilling={isRefilling}
+              style={{
+                transform: `translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
+                zIndex: projects.length - index,
+              }}
+              onSwipe={handleSwipe}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
 
 const ProjectGridView = ({ projects: initialProjects }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -414,7 +486,7 @@ const ProjectGridView = ({ projects: initialProjects }) => {
         className="max-w-lg mx-auto mb-8 px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.3 }}
       >
         <div className={`relative w-full transition-all duration-300 ${isFocused ? 'scale-105' : 'scale-100'}`}>
           <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 to-blue-600/20 rounded-full blur-md -z-10"></div>
@@ -456,11 +528,15 @@ const ProjectGridView = ({ projects: initialProjects }) => {
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 max-w-6xl mx-auto"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: 0.3 }}
       >
         {filteredProjects.length > 0 ? (
           filteredProjects.map((project, index) => (
-            <ProjectGridItem key={`grid-${project.title}`} project={project} index={index} />
+            <ProjectGridItem 
+              key={`grid-${project.title}`} 
+              project={project} 
+              index={index} 
+            />
           ))
         ) : (
           <motion.div 
@@ -483,76 +559,6 @@ const ProjectGridView = ({ projects: initialProjects }) => {
           </motion.div>
         )}
       </motion.div>
-    </div>
-  );
-};
-
-const ProjectStack = ({ projects: initialProjects }) => {
-  const [projects, setProjects] = useState(initialProjects);
-  const [isFirstInteraction, setIsFirstInteraction] = useState(true);
-  const [isRefilling, setIsRefilling] = useState(false);
-  const [containerHeight, setContainerHeight] = useState(400);
-
-  useEffect(() => {
-    const updateHeight = () => {
-      if (window.innerWidth < 640) {
-        setContainerHeight(300);
-      } else if (window.innerWidth < 1024) {
-        setContainerHeight(350);
-      } else {
-        setContainerHeight(400);
-      }
-    };
-
-    updateHeight();
-    window.addEventListener('resize', updateHeight);
-    return () => window.removeEventListener('resize', updateHeight);
-  }, []);
-
-  const handleSwipe = (direction) => {
-    setIsFirstInteraction(false);
-    setProjects((prev) => {
-      const remaining = prev.slice(1);
-      if (remaining.length === 0) {
-        setTimeout(() => {
-          setIsRefilling(true);
-          setProjects(initialProjects);
-          setTimeout(() => {
-            setIsRefilling(false);
-          }, initialProjects.length * 150 + 600);
-        }, 400);
-      }
-      return remaining;
-    });
-  };
-
-  return (
-    <div 
-      className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-md lg:max-w-lg mx-auto mt-8" 
-      style={{ height: containerHeight }}
-    >
-      <div className="relative w-full h-full">
-        {projects.slice(0, 6).map((project, index) => {
-          const offsetX = -index * (window.innerWidth < 640 ? STACK_OFFSET * 0.7 : STACK_OFFSET);
-          const offsetY = index * (window.innerWidth < 640 ? STACK_OFFSET/3 : STACK_OFFSET/2);
-          const scale = 1 - index * (window.innerWidth < 640 ? 0.015 : 0.02);
-
-          return (
-            <ProjectCard
-              key={`${project.title}-${isRefilling ? 'refill' : 'normal'}`}
-              project={project}
-              index={index}
-              isFirstInteraction={isFirstInteraction}
-              isRefilling={isRefilling}
-              style={{
-                transform: `translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
-                zIndex: projects.length - index,
-              }}
-              onSwipe={index === 0 ? handleSwipe : undefined}
-            />
-          );
-        })}
-      </div>
     </div>
   );
 };
@@ -646,6 +652,17 @@ const ViewToggle = ({ isGridView, toggleView }) => {
 
 const Projects = () => {
   const [isGridView, setIsGridView] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  
+  const toggleView = (value) => {
+    if (isAnimating || value === isGridView) return;
+    setIsAnimating(true);
+    setIsGridView(value);
+    
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 600);
+  };
 
   return (
     <>
@@ -673,7 +690,7 @@ const Projects = () => {
         </motion.h2>
         
         <motion.div 
-          className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto mt-2 sm:mt-3 text-center"
+          className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto mt-2 sm:mt-3 text-center px-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -703,24 +720,43 @@ const Projects = () => {
         </motion.div>
       </motion.div>
 
-      <ViewToggle isGridView={isGridView} toggleView={setIsGridView} />
+      <ViewToggle isGridView={isGridView} toggleView={toggleView} />
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        {isGridView ? (
-          <ProjectGridView projects={projects} />
-        ) : (
-          <ProjectStack projects={projects} />
-        )}
-      </motion.div>
+      <div className="w-full overflow-hidden">
+        <AnimatePresence initial={false} mode="wait">
+          {isGridView ? (
+            <motion.div
+              key="grid-view"
+              initial={{ opacity: 0, x: 100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -100 }}
+              transition={{ 
+                duration: 0.4, 
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
+            >
+              <ProjectGridView projects={projects} />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="stack-view"
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 100 }}
+              transition={{ 
+                duration: 0.4, 
+                ease: [0.25, 0.1, 0.25, 1]
+              }}
+            >
+              <ProjectStack projects={projects} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </>
   );
 };
 
-// Add keyframe animations
 const style = document.createElement('style');
 style.textContent = `
   @keyframes shimmer {
