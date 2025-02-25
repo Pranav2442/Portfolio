@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, useMotionValue, useAnimation, useTransform, AnimatePresence } from 'framer-motion';
 import { SectionWrapper } from '../hoc';
 import { textVariant } from '../utils/motion';
@@ -161,7 +161,7 @@ const InitialInstructions = () => {
   );
 };
 
-const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRefilling }) => {
+const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRefilling, isActive = true }) => {
   const cardRef = useRef(null);
   const x = useMotionValue(0);
   const controls = useAnimation();
@@ -180,36 +180,42 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
   }, []);
 
   useEffect(() => {
+    if (!isActive) {
+      controls.start({ x: 0, rotate: 0, scale: 1 });
+    }
+  }, [isActive, controls]);
+
+  useEffect(() => {
     if (isRefilling) {
       controls.start({
         x: [-window.innerWidth, 0],
         scale: [0.8, 1],
         transition: { 
-          duration: 0.6,
-          delay: index * 0.15,
-          ease: [0.16, 1, 0.3, 1], 
+          duration: 0.4, 
+          delay: index * 0.1, 
+          ease: "easeOut" 
         }
       });
     }
   }, [isRefilling, controls, index]);
 
   useEffect(() => {
-    if (index === 0 && !isMobile) {
+    if (index === 0 && !isMobile && isActive) {
       const handleKeyDown = async (e) => {
         if (e.key === 'ArrowLeft') {
           await controls.start({
             x: -window.innerWidth,
-            rotate: -30,
-            scale: 0.8,
-            transition: { duration: 0.4 }
+            rotate: -15, 
+            scale: 0.9, 
+            transition: { duration: 0.3, ease: "easeOut" } 
           });
           handleSwipe('left');
         } else if (e.key === 'ArrowRight') {
           await controls.start({
             x: window.innerWidth,
-            rotate: 30,
-            scale: 0.8,
-            transition: { duration: 0.4 }
+            rotate: 15, 
+            scale: 0.9, 
+            transition: { duration: 0.3, ease: "easeOut" } 
           });
           handleSwipe('right');
         }
@@ -218,9 +224,11 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
       window.addEventListener('keydown', handleKeyDown);
       return () => window.removeEventListener('keydown', handleKeyDown);
     }
-  }, [index, isMobile, controls]);
+  }, [index, isMobile, controls, isActive]);
 
   const handleSwipe = (direction) => {
+    if (!isActive) return; 
+    
     if (direction === 'right') {
       window.open(project.link, "_blank");
     }
@@ -228,29 +236,41 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
   };
 
   const handleDragEnd = async (_, info) => {
+    if (!isActive) return; 
+    
     const offset = info.offset.x;
     const velocity = info.velocity.x;
 
     if (Math.abs(offset) > SWIPE_THRESHOLD || Math.abs(velocity) > 800) {
       const direction = offset > 0 ? 'right' : 'left';
-      await controls.start({
-        x: direction === 'right' ? window.innerWidth : -window.innerWidth,
-        rotate: direction === 'right' ? 30 : -30,
-        scale: 0.8,
-        transition: { duration: 0.4 }
-      });
+      if (isMobile) {
+        await controls.start({
+          x: direction === 'right' ? window.innerWidth : -window.innerWidth,
+          transition: { duration: 0.3, ease: "easeOut" }
+        });
+      } else {
+        await controls.start({
+          x: direction === 'right' ? window.innerWidth : -window.innerWidth,
+          rotate: direction === 'right' ? 15 : -15, 
+          scale: 0.9, 
+          transition: { duration: 0.3, ease: "easeOut" } 
+        });
+      }
       handleSwipe(direction);
     } else {
       controls.start({ 
         x: 0, 
         transition: { 
           type: "spring", 
-          stiffness: 400, 
-          damping: 30 
+          stiffness: 300, 
+          damping: 25 
         } 
       });
     }
   };
+
+  
+  const shouldShowEffects = !isMobile || window.innerWidth > 768;
 
   return (
     <motion.div
@@ -258,16 +278,16 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
       style={{
         ...style,
         x,
-        rotate,
+        rotate: isMobile ? 0 : rotate, 
         scale,
       }}
-      drag="x"
+      drag={isActive ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleDragEnd}
       animate={controls}
-      whileTap={{ scale: 0.95, cursor: "grabbing" }}
+      whileTap={isActive ? { scale: 0.98, cursor: "grabbing" } : {}}
       className={`touch-none absolute top-0 left-0 w-full h-full
-        ${index > 0 && !isRefilling ? 'pointer-events-none' : 'cursor-grab'}`}
+        ${index > 0 && !isRefilling ? 'pointer-events-none' : isActive ? 'cursor-grab' : ''}`}
     >
       <motion.div 
         className="absolute left-4 top-4 bg-rose-500/90 text-white px-3 py-1 rounded-full text-xs sm:text-sm font-medium backdrop-blur-sm"
@@ -287,16 +307,10 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
         <GlowEffect />
         <div className="w-full h-full bg-gradient-to-br from-violet-600 via-indigo-700 to-blue-800 p-[1px] rounded-[20px] shadow-lg shadow-purple-900/20 relative z-10">
           <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-[20px] py-3 px-4 sm:px-6 h-full flex justify-evenly items-center flex-col relative overflow-hidden backdrop-blur-sm">
-            <ShimmerEffect />
+            {shouldShowEffects && <ShimmerEffect />}
+            {shouldShowEffects && <FloatingParticles />}
             
-            {window.innerWidth > 768 && <FloatingParticles />}
-            
-            <motion.div 
-              className="relative z-10 text-center w-full"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
+            <div className="relative z-10 text-center w-full">
               <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 text-base sm:text-lg md:text-xl font-bold mb-2">
                 {project.title}
               </h3>
@@ -304,10 +318,10 @@ const ProjectCard = ({ project, style, onSwipe, index, isFirstInteraction, isRef
               <p className="text-white/80 text-xs sm:text-sm font-light line-clamp-3">
                 {project.description}
               </p>
-            </motion.div>
+            </div>
             
-            {index === 0 && <SwipeIndicator x={x} />}
-            {index === 0 && isFirstInteraction && <InitialInstructions />}
+            {index === 0 && isActive && <SwipeIndicator x={x} />}
+            {index === 0 && isFirstInteraction && isActive && <InitialInstructions />}
           </div>
         </div>
       </div>
@@ -335,33 +349,6 @@ const ProjectGridItem = ({ project, index }) => {
           <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 rounded-[20px] p-5 flex flex-col relative overflow-hidden backdrop-blur-sm h-full">
             <ShimmerEffect />
             
-            {window.innerWidth > 768 && (
-              <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-0 group-hover:opacity-30 transition-opacity duration-500">
-                {[...Array(5)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-1 h-1 bg-white rounded-full"
-                    animate={{
-                      x: [0, Math.random() * 100 - 50],
-                      y: [0, Math.random() * 100 - 50],
-                      scale: [1, Math.random() * 1.5 + 0.5],
-                      opacity: [0, 0.8, 0],
-                    }}
-                    transition={{
-                      duration: Math.random() * 2 + 1,
-                      repeat: Infinity,
-                      repeatType: "loop",
-                      ease: "easeInOut",
-                    }}
-                    style={{
-                      top: `${Math.random() * 100}%`,
-                      left: `${Math.random() * 100}%`,
-                    }}
-                  />
-                ))}
-              </div>
-            )}
-            
             <div className="flex flex-col h-full">
               <div className="mb-2 min-h-[28px] sm:min-h-[32px] flex items-center justify-center">
                 <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 text-base sm:text-lg font-bold">
@@ -376,16 +363,20 @@ const ProjectGridItem = ({ project, index }) => {
               </div>
               
               <div className="flex justify-center mt-auto">
-                <motion.div 
+                <motion.button 
                   className="bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs rounded-full px-4 py-2 inline-flex items-center gap-1 transform transition-all duration-300 group-hover:shadow-lg group-hover:shadow-violet-500/20"
                   whileHover={{ scale: 1.05 }}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open(project.link, "_blank");
+                  }}
                 >
                   <span>Watch Project</span>
                   <svg className="w-3 h-3 ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M5 12h14"></path>
                     <path d="M12 5l7 7-7 7"></path>
                   </svg>
-                </motion.div>
+                </motion.button>
               </div>
             </div>
           </div>
@@ -395,13 +386,26 @@ const ProjectGridItem = ({ project, index }) => {
   );
 };
 
-const ProjectStack = ({ projects: initialProjects }) => {
-  const [projects, setProjects] = useState(initialProjects);
+const ProjectStack = ({ projects: initialProjects, isActive = true, currentIndex, onCardChange }) => {
+  const [projects, setProjects] = useState([...initialProjects]);
   const [isFirstInteraction, setIsFirstInteraction] = useState(true);
   const [isRefilling, setIsRefilling] = useState(false);
   const [containerHeight, setContainerHeight] = useState(400);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    if (currentIndex !== undefined && isActive) {
+      if (projects.length !== initialProjects.length - currentIndex) {
+        setProjects(initialProjects.slice(currentIndex));
+      }
+    }
+  }, [currentIndex, initialProjects, isActive]);
+
+  useEffect(() => {
+    const checkDevice = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
     const updateHeight = () => {
       if (window.innerWidth < 640) {
         setContainerHeight(300);
@@ -412,28 +416,40 @@ const ProjectStack = ({ projects: initialProjects }) => {
       }
     };
 
+    checkDevice();
     updateHeight();
-    const resizeHandler = (event) => {
+    
+    const resizeHandler = () => {
+      checkDevice();
       updateHeight();
     };
+    
     window.addEventListener('resize', resizeHandler);
     return () => window.removeEventListener('resize', resizeHandler);
   }, []);
 
   const handleSwipe = (direction) => {
+    if (!isActive) return; 
+    
     setIsFirstInteraction(false);
     setProjects((prev) => {
-      const remaining = prev.slice(1);
-      if (remaining.length === 0) {
+      if (prev.length <= 1) {
         setTimeout(() => {
           setIsRefilling(true);
-          setProjects(initialProjects);
+          setProjects([...initialProjects]);
           setTimeout(() => {
             setIsRefilling(false);
-          }, initialProjects.length * 150 + 600);
-        }, 400);
+          }, 600);
+        }, 300);
+        return prev;
+      } else {
+        const newProjects = prev.slice(1);
+        const newIndex = initialProjects.findIndex(p => p.title === newProjects[0]?.title);
+        if (onCardChange && newIndex !== -1) {
+          onCardChange(newIndex);
+        }
+        return newProjects;
       }
-      return remaining;
     });
   };
 
@@ -455,6 +471,7 @@ const ProjectStack = ({ projects: initialProjects }) => {
               index={index}
               isFirstInteraction={isFirstInteraction}
               isRefilling={isRefilling}
+              isActive={isActive}
               style={{
                 transform: `translate(${offsetX}px, ${offsetY}px) scale(${scale})`,
                 zIndex: projects.length - index,
@@ -472,6 +489,7 @@ const ProjectGridView = ({ projects: initialProjects }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredProjects, setFilteredProjects] = useState(initialProjects);
   const [isFocused, setIsFocused] = useState(false);
+  const gridRef = useRef(null);
 
   useEffect(() => {
     const results = initialProjects.filter(project =>
@@ -481,14 +499,14 @@ const ProjectGridView = ({ projects: initialProjects }) => {
   }, [searchTerm, initialProjects]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-16" id="projects-grid">
       <motion.div
         className="max-w-lg mx-auto mb-8 px-4"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className={`relative w-full transition-all duration-300 ${isFocused ? 'scale-105' : 'scale-100'}`}>
+        <div className={`relative w-full transition-all duration-300 mt-10 ${isFocused ? 'scale-105' : 'scale-100'}`}>
           <div className="absolute inset-0 bg-gradient-to-r from-violet-600/20 to-blue-600/20 rounded-full blur-md -z-10"></div>
           <div className={`relative rounded-full overflow-hidden bg-gradient-to-r from-violet-600 to-blue-600 p-[1px] transition-all duration-300 ${isFocused ? 'shadow-lg shadow-violet-500/20' : ''}`}>
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
@@ -524,49 +542,49 @@ const ProjectGridView = ({ projects: initialProjects }) => {
         </div>
       </motion.div>
 
-      <motion.div 
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 max-w-6xl mx-auto"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        {filteredProjects.length > 0 ? (
-          filteredProjects.map((project, index) => (
+      {filteredProjects.length > 0 ? (
+        <motion.div 
+          ref={gridRef}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-6 max-w-6xl mx-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {filteredProjects.map((project, index) => (
             <ProjectGridItem 
               key={`grid-${project.title}`} 
               project={project} 
               index={index} 
             />
-          ))
-        ) : (
-          <motion.div 
-            className="col-span-full text-center py-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-          >
-            <div className="flex flex-col items-center justify-center">
-              <svg className="w-16 h-16 text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
-              </svg>
-              <p className="text-gray-400 text-lg">No projects found matching "{searchTerm}"</p>
-              <button 
-                className="mt-4 bg-gradient-to-r from-violet-500 to-blue-500 text-white px-4 py-2 rounded-full hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-300"
-                onClick={() => setSearchTerm('')}
-              >
-                Clear search
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </motion.div>
+          ))}
+        </motion.div>
+      ) : (
+        <motion.div 
+          className="text-center py-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <div className="flex flex-col items-center justify-center">
+            <svg className="w-16 h-16 text-gray-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+            </svg>
+            <p className="text-gray-400 text-lg">No projects found matching "{searchTerm}"</p>
+            <button 
+              className="mt-4 bg-gradient-to-r from-violet-500 to-blue-500 text-white px-4 py-2 rounded-full hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-300"
+              onClick={() => setSearchTerm('')}
+            >
+              Clear search
+            </button>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };
 
-// Clean modern toggle button with fixed animation
 const ViewToggle = ({ isGridView, toggleView }) => {
   return (
-    <div className="flex justify-center mb-8 px-4 mt-12"> {/* Added top margin */}
+    <div className="flex justify-center mb-8 px-4 mt-12"> 
       <div className="w-full max-w-md">
         <motion.div 
           className="bg-gradient-to-r from-violet-600 to-blue-600 p-[1px] rounded-lg relative"
@@ -653,15 +671,23 @@ const ViewToggle = ({ isGridView, toggleView }) => {
 const Projects = () => {
   const [isGridView, setIsGridView] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [currentCardIndex, setCurrentCardIndex] = useState(0);
   
   const toggleView = (value) => {
     if (isAnimating || value === isGridView) return;
     setIsAnimating(true);
-    setIsGridView(value);
     
     setTimeout(() => {
-      setIsAnimating(false);
-    }, 600);
+      setIsGridView(value);
+      
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 300);
+    }, 50);
+  };
+  
+  const handleCardChange = (index) => {
+    setCurrentCardIndex(index);
   };
 
   return (
@@ -722,36 +748,38 @@ const Projects = () => {
 
       <ViewToggle isGridView={isGridView} toggleView={toggleView} />
 
-      <div className="w-full overflow-hidden">
-        <AnimatePresence initial={false} mode="wait">
-          {isGridView ? (
-            <motion.div
-              key="grid-view"
-              initial={{ opacity: 0, x: 100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -100 }}
-              transition={{ 
-                duration: 0.4, 
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-            >
-              <ProjectGridView projects={projects} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="stack-view"
-              initial={{ opacity: 0, x: -100 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 100 }}
-              transition={{ 
-                duration: 0.4, 
-                ease: [0.25, 0.1, 0.25, 1]
-              }}
-            >
-              <ProjectStack projects={projects} />
-            </motion.div>
-          )}
-        </AnimatePresence>
+      <div className="w-full overflow-hidden relative" style={{ minHeight: '500px' }}>
+        
+        <div 
+          className="w-full transition-all duration-300 ease-in-out"
+          style={{ 
+            opacity: isGridView ? 1 : 0,
+            transform: isGridView ? 'translateX(0)' : 'translateX(50px)',
+            pointerEvents: isGridView ? 'auto' : 'none',
+            position: isGridView ? 'relative' : 'absolute',
+            zIndex: isGridView ? 10 : 0
+          }}
+        >
+          <ProjectGridView projects={projects} />
+        </div>
+        
+        <div 
+          className="w-full transition-all duration-300 ease-in-out"
+          style={{ 
+            opacity: isGridView ? 0 : 1,
+            transform: isGridView ? 'translateX(-50px)' : 'translateX(0)',
+            pointerEvents: isGridView ? 'none' : 'auto',
+            position: isGridView ? 'absolute' : 'relative',
+            zIndex: isGridView ? 0 : 10
+          }}
+        >
+          <ProjectStack 
+            projects={projects} 
+            isActive={!isGridView} 
+            currentIndex={currentCardIndex}
+            onCardChange={handleCardChange}
+          />
+        </div>
       </div>
     </>
   );
