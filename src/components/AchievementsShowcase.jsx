@@ -85,11 +85,11 @@ const AchievementsShowcase = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               whileHover={{ scale: 1.05, y: -5 }}
-              className={`relative group flex-1 min-w-[280px]`}
+              className={`relative group flex-1 min-w-[280px] perspective-1000`}
             >
               <div
                 className={`
-                absolute inset-0 bg-gradient-to-r ${achievement.color}
+                absolute inset-0 bg-gradient-to-r from-violet-500/10 to-blue-500/10
                 rounded-xl opacity-0 group-hover:opacity-20 blur-xl
                 transition-all duration-500 -z-10
               `}
@@ -97,14 +97,14 @@ const AchievementsShowcase = () => {
 
               <div
                 className="h-full rounded-xl p-6
-                            border border-white/10 group-hover:border-white/20
+                            border border-slate-700/30 group-hover:border-violet-500/50
                             transition-all duration-300
-                            backdrop-blur-sm bg-white/5"
+                            backdrop-blur-sm bg-[rgba(17,24,39,0.8)]"
               >
                 <div className="flex flex-col items-center text-center gap-4">
                   <motion.div
                     className={`
-                      w-16 h-16 rounded-lg bg-gradient-to-r ${achievement.color}
+                      w-16 h-16 rounded-lg bg-gradient-to-r from-violet-500 to-blue-500
                       flex items-center justify-center
                       group-hover:shadow-lg group-hover:shadow-violet-500/25
                       transition-all duration-300
@@ -127,6 +127,17 @@ const AchievementsShowcase = () => {
           ))}
         </div>
       ))}
+
+      <style jsx global>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+
+        .group:hover {
+          transform: rotateX(4deg) rotateY(-4deg);
+          transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+      `}</style>
     </div>
   );
 };
