@@ -18,7 +18,8 @@ import {
   Cpu,
   Shield,
   Zap,
-  Binary
+  Binary,
+  FastForward
 } from 'lucide-react';
 
 const Tech = () => {
@@ -27,6 +28,8 @@ const Tech = () => {
   const [isComplete, setIsComplete] = useState(false);
   const [hoveredBox, setHoveredBox] = useState(null);
   const [binaryStream, setBinaryStream] = useState('');
+  const [skipAnimation, setSkipAnimation] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   const dialogues = [
     {
@@ -97,6 +100,16 @@ const Tech = () => {
     '// Transforming ideas into reality 🚀'
   ];
 
+  
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
   useEffect(() => {
     const keyframes = `
       @keyframes binaryRain {
@@ -140,6 +153,12 @@ const Tech = () => {
   }, []);
 
   useEffect(() => {
+    if (skipAnimation) {
+      setCurrentLineIndex(codeContent.length);
+      setIsComplete(true);
+      return;
+    }
+
     if (currentLineIndex < codeContent.length) {
       const line = codeContent[currentLineIndex];
       if (currentCharIndex < line.length) {
@@ -157,7 +176,11 @@ const Tech = () => {
     } else {
       setIsComplete(true);
     }
-  }, [currentLineIndex, currentCharIndex]);
+  }, [currentLineIndex, currentCharIndex, skipAnimation, codeContent.length]);
+
+  const handleSkip = () => {
+    setSkipAnimation(true);
+  };
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center p-4 relative overflow-hidden sm:p-4 md:p-6">
@@ -193,7 +216,7 @@ const Tech = () => {
                           transition-transform duration-300
                           ${hoveredBox === index ? 'scale-110' : ''}`}>
             {React.createElement(dialogue.icon, {
-              size: window.innerWidth < 640 ? 20 : 28,
+              size: isMobile ? 20 : 28,
               className: "text-white"
             })}
           </div>
@@ -272,17 +295,43 @@ const Tech = () => {
             <Zap size={12} className="text-yellow-400 hidden sm:block" />
           </div>
 
-          
           <div className="flex items-center gap-4 relative z-10">
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <div className="w-2 h-2 rounded-full bg-purple-500" 
-                     style={{ animation: 'pulse 2s ease-in-out infinite' }} />
-                <div className="absolute inset-0 rounded-full bg-purple-500 blur-sm opacity-50" 
-                     style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+            {(!isMobile || isComplete || skipAnimation) && (
+              <div className="flex items-center gap-2">
+                <div className="relative">
+                  <div className="w-2 h-2 rounded-full bg-purple-500" 
+                       style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+                  <div className="absolute inset-0 rounded-full bg-purple-500 blur-sm opacity-50" 
+                       style={{ animation: 'pulse 2s ease-in-out infinite' }} />
+                </div>
+                <span className="text-xs text-purple-500 font-mono">LIVE</span>
               </div>
-              <span className="text-xs text-purple-500 font-mono">LIVE</span>
-            </div>
+            )}
+            {!isComplete && !skipAnimation && (
+              <motion.button
+                onClick={handleSkip}
+                className={`flex items-center gap-2 bg-gray-900/80 backdrop-blur-md
+                          text-white text-xs px-2.5 py-1 rounded-full
+                          border border-cyan-500/30 shadow-md shadow-cyan-500/20
+                          hover:bg-gray-800/90 transition-all duration-300 group
+                          ${!isMobile ? 'ml-3' : ''}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <div className="relative w-3.5 h-3.5 flex items-center justify-center">
+                  <FastForward size={12} className="text-cyan-400 relative z-10" />
+                  <div className="absolute inset-0 bg-cyan-500/40 rounded-full blur-md 
+                                group-hover:bg-cyan-400/60 transition-all duration-300" />
+                </div>
+                <span className="font-medium tracking-wide relative text-xs">
+                  Skip
+                  <span className="absolute -bottom-[2px] left-0 w-0 h-[1px] bg-gradient-to-r from-cyan-500 to-blue-500 
+                                  group-hover:w-full transition-all duration-300"></span>
+                </span>
+              </motion.button>
+            )}
           </div>
         </div>
 
@@ -311,8 +360,8 @@ const Tech = () => {
                 } relative group hover:bg-white/5 rounded transition-colors duration-150`}
               >
                 <code className="relative z-10 break-words overflow-hidden">
-                  {index < currentLineIndex && line}
-                  {index === currentLineIndex && (
+                  {(index < currentLineIndex || skipAnimation) && line}
+                  {index === currentLineIndex && !skipAnimation && (
                     <>
                       {line.slice(0, currentCharIndex)}
                       <motion.span
