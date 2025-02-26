@@ -1,6 +1,5 @@
-import React, { memo, useEffect, useState, useMemo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
 
@@ -342,43 +341,44 @@ const SkillsCard = memo(({ index, title }) => {
   const Icon = SkillIcons[title];
 
   return (
-    <div 
+    <motion.div
       ref={ref}
-      className="group relative h-[130px] xs:h-[140px] sm:h-[160px] lg:h-[180px] cursor-pointer perspective-1000"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
+      transition={{
+        duration: 0.3,
+        delay: Math.min(index * 0.03, 0.3), 
+        ease: "easeOut", 
+      }}
+      className="group w-full rounded-[20px] cursor-pointer"
+      whileHover={{ y: -5 }}
+      style={{ willChange: "transform" }} 
     >
-      <div className="absolute inset-0 bg-[rgba(17,24,39,0.8)] backdrop-blur-md rounded-xl overflow-hidden border border-slate-700/30 transition-all duration-300 group-hover:border-purple-500/50">
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-          <div className="absolute w-full h-full rounded-full bg-gradient-to-r from-purple-500/10 to-pink-500/10 blur-2xl -top-1/2 -right-1/2 group-hover:translate-x-10 group-hover:translate-y-10 transition-transform duration-1000"></div>
-        </div>
-      </div>
-
-      <div className="relative h-full p-3 xs:p-4 sm:p-5 lg:p-6 flex flex-col items-center justify-center space-y-2 xs:space-y-3 sm:space-y-4">
-        <div className="relative group-hover:-translate-y-1 transition-transform duration-500 scale-75 xs:scale-90 sm:scale-100">
-          <div className="absolute -inset-2 bg-gradient-to-r from-violet-500 to-blue-500 rounded-full opacity-0 group-hover:opacity-30 blur-xl transition-opacity duration-500"></div>
-
-          <div className="relative bg-[rgba(15,23,42,0.8)] backdrop-blur-sm p-4 rounded-full border border-slate-700/50 group-hover:border-violet-500/50 transition-colors duration-500">
-            <div className="relative z-10 transform group-hover:scale-110 transition-transform duration-500">
+      <div className="relative h-full w-full">
+        <div className="bg-gradient-to-br from-violet-600 via-indigo-700 to-blue-800 p-[1px] rounded-[20px] shadow-md">
+          <div className="bg-gray-900 rounded-[20px] p-4 flex flex-col justify-between items-center h-full">
+            <div className="transform transition-transform duration-300 group-hover:scale-110 py-2">
               {Icon && <Icon />}
+            </div>
+
+            <div className="mt-2 relative">
+              <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 text-sm sm:text-base font-medium text-center">
+                {title}
+              </h3>
+
+              <div className="h-0.5 w-0 bg-gradient-to-r from-violet-500 via-blue-400 to-blue-500 mx-auto mt-1 group-hover:w-full transition-all duration-300"></div>
             </div>
           </div>
         </div>
-
-        <div className="relative">
-          <h3 className="text-sm xs:text-base font-medium text-white opacity-80 group-hover:opacity-100 transition-opacity duration-500 text-center">
-            {title}
-          </h3>
-
-          <div className="absolute -bottom-2 left-0 w-0 h-0.5 bg-gradient-to-r from-violet-500 to-blue-500 group-hover:w-full transition-all duration-500"></div>
-        </div>
       </div>
-    </div>
+    </motion.div>
   );
 });
 
 const SkillsGrid = memo(() => {
   return (
-    <div className="mt-8 sm:mt-10 lg:mt-12">
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-5 lg:gap-6">
+    <div className="mt-8 sm:mt-10">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-5">
         {skills.map((skill, index) => (
           <SkillsCard key={skill} index={index} title={skill} />
         ))}
@@ -389,11 +389,10 @@ const SkillsGrid = memo(() => {
 
 const Skills = () => {
   const prefersReducedMotion = useReducedMotion();
-  const [ref, isInView] = useInViewOnce(0.1);
 
   return (
     <div className="w-full">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
         <motion.div
           variants={textVariant()}
           initial="hidden"
@@ -401,24 +400,28 @@ const Skills = () => {
           viewport={{ once: true }}
           className="relative"
         >
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-blue-500/20 blur-3xl -z-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          />
-
           <motion.h2
             className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Skills
+            Skills.
           </motion.h2>
 
           <motion.div
-            className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-violet-500 to-blue-500 mx-auto mt-3 sm:mt-4 rounded-full relative overflow-hidden mb-5"
+            className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto mt-2 sm:mt-3 text-center px-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2, duration: 0.6 }}
+          >
+            <p className="text-gray-300 text-sm sm:text-base">
+              Technologies I've worked with
+            </p>
+          </motion.div>
+
+          <motion.div
+            className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-violet-500 to-blue-500 mx-auto mt-3 sm:mt-4 rounded-full relative overflow-hidden"
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: "100%", opacity: 1 }}
             transition={{ delay: 0.3, duration: 0.6 }}
@@ -439,22 +442,6 @@ const Skills = () => {
 
         <SkillsGrid />
       </div>
-
-      <style jsx global>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-
-        .perspective-1000 {
-          perspective: 1000px;
-        }
-
-        .group:hover {
-          transform: rotateX(4deg) rotateY(-4deg);
-          transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-      `}</style>
     </div>
   );
 };
