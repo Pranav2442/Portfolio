@@ -4,110 +4,139 @@ import { profile } from "../assets";
 
 const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);
-  const [hidden, setHidden] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      setHidden(currentScrollY > lastScrollY);
-      setLastScrollY(currentScrollY);
+      const scrollHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+
+      const progress =
+        scrollHeight > 0 ? (currentScrollY / scrollHeight) * 100 : 0;
+      setScrollProgress(progress);
+
+      setScrolled(currentScrollY > 20);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   return (
-    <div
-      className={`
-        fixed top-0 z-20 w-full
-        transform transition-transform duration-500 ease-in-out
-        ${hidden ? "-translate-y-full" : "translate-y-0"}
-      `}
-    >
-      <div className="relative h-20">
-        <div className="relative h-full px-6 sm:px-16">
-          <div className="h-full w-full max-w-7xl mx-auto flex items-center">
-            <button
-              className="group relative flex items-center gap-6"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
-            >
-              <div className="relative">
-                <div
-                  className={`
-                    absolute -inset-1 
-                    bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600
-                    rounded-full opacity-70
-                    transition-all duration-300
-                    ${isHovered ? "blur-md scale-110" : "blur-sm scale-100"}
-                  `}
-                />
+    <>
+      <div
+        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-violet-600 via-indigo-700 to-blue-800 shadow-[0_0_10px_rgba(139,92,246,0.5)]"
+        style={{ width: `${scrollProgress}%` }}
+      />
 
-                <div className="relative h-12 w-12">
-                  <img
-                    src={profile}
-                    alt="Profile"
-                    className="h-full w-full rounded-full object-cover"
-                  />
-
-                  {/* Sparkle effect */}
+      <div
+        className={`
+          fixed top-0 z-40 w-full backdrop-blur-sm bg-transparent
+          transform transition-transform duration-500 ease-in-out
+          ${scrolled ? "-translate-y-full" : "translate-y-0"}
+          border-b border-violet-500/10
+        `}
+      >
+        <div className="relative h-16 sm:h-20">
+          <div className="relative h-full px-4 sm:px-6 md:px-16">
+            <div className="h-full w-full max-w-7xl mx-auto flex items-center">
+              <button
+                className="group relative flex items-center gap-4 sm:gap-6"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                <div className="relative">
                   <div
                     className={`
-                      absolute -right-1 -top-1
-                      transition-all duration-300 transform
-                      ${
-                        isHovered ? "scale-125 rotate-12" : "scale-100 rotate-0"
-                      }
+                      absolute -inset-1 animate-spin-slow
+                      bg-gradient-to-r from-violet-600 via-indigo-700 to-blue-800
+                      rounded-full opacity-70
+                      transition-all duration-300
+                      ${isHovered ? "blur-md scale-110" : "blur-sm scale-100"}
                     `}
-                  >
-                    <Sparkles className="w-4 h-4 text-teal-300" />
-                  </div>
-                </div>
-              </div>
+                  />
 
-              <div className="relative overflow-hidden">
-                <div
-                  className={`
-                    transform transition-all duration-300
-                    ${isHovered ? "translate-y-0" : "translate-y-0"}
-                  `}
-                >
-                  <div className="relative">
-                    <p className="text-xl font-medium bg-gradient-to-r from-teal-300 via-blue-300 to-purple-300 text-transparent bg-clip-text">
-                      Pranav Mailarpawar
-                    </p>
+                  <div className="relative h-10 w-10 sm:h-12 sm:w-12 overflow-hidden rounded-full ring-2 ring-white/20">
+                    <img
+                      src={profile}
+                      alt="Profile"
+                      className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-110"
+                    />
 
                     <div
                       className={`
-                        absolute bottom-0 left-0 h-px w-full
-                        bg-gradient-to-r from-teal-400 via-blue-500 to-purple-600
-                        transform origin-left transition-transform duration-300 ease-out
-                        ${isHovered ? "scale-x-100" : "scale-x-0"}
+                        absolute -right-1 -top-1
+                        transition-all duration-300 transform
+                        ${
+                          isHovered
+                            ? "scale-125 rotate-12"
+                            : "scale-100 rotate-0"
+                        }
                       `}
-                    />
-                  </div>
+                    >
+                      <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-violet-300 animate-pulse" />
+                    </div>
 
-                  <div
-                    className={`
-                      overflow-hidden transition-all duration-300 ease-out
-                      ${
-                        isHovered ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
-                      }
-                    `}
-                  >
-                    <p className="text-sm text-teal-300 mt-1">
-                      Software Architect
-                    </p>
+                    <div
+                      className={`
+                        absolute -left-1 -bottom-1
+                        transition-all duration-500 transform
+                        ${
+                          isHovered
+                            ? "scale-110 opacity-100"
+                            : "scale-0 opacity-0"
+                        }
+                      `}
+                    >
+                      <Sparkles className="w-2 h-2 sm:w-3 sm:h-3 text-blue-300" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </button>
+
+                <div className="relative overflow-hidden">
+                  <div className="transform transition-all duration-300">
+                    <div className="relative">
+                      <p className="text-base sm:text-xl font-bold bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 text-transparent bg-clip-text bg-size-200 bg-pos-0 group-hover:bg-pos-100 transition-all duration-500">
+                        Pranav Mailarpawar
+                      </p>
+
+                      <div
+                        className={`
+                          absolute bottom-0 left-0 h-0.5 w-full
+                          bg-gradient-to-r from-violet-500 via-blue-500 to-purple-600
+                          transform origin-left transition-transform duration-300 ease-out
+                          ${isHovered ? "scale-x-100" : "scale-x-0"}
+                        `}
+                      />
+                    </div>
+
+                    <div
+                      className={`
+                        overflow-hidden transition-all duration-500 ease-out
+                        ${
+                          isHovered
+                            ? "max-h-20 opacity-100 translate-y-0"
+                            : "max-h-0 opacity-0 -translate-y-2"
+                        }
+                      `}
+                    >
+                      <p className="text-xs sm:text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400 mt-1 flex items-center">
+                        <span className="mr-2">Software Engineer</span>
+                        <span className="inline-block h-1.5 w-1.5 rounded-full bg-violet-400 animate-pulse"></span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
