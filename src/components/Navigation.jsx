@@ -27,7 +27,7 @@ const Navigation = () => {
   return (
     <>
       <div 
-        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-violet-600 via-indigo-700 to-blue-800 shadow-[0_0_10px_rgba(139,92,246,0.5)]" 
+        className="fixed bottom-0 left-0 right-0 z-50 h-0.5 bg-gradient-to-r from-violet-600 via-indigo-700 to-blue-800 shadow-[0_0_8px_rgba(139,92,246,0.6)]" 
         style={{ width: `${scrollProgress}%` }} 
       />
       
