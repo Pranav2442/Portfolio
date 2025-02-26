@@ -3,7 +3,6 @@ import { motion, useReducedMotion } from "framer-motion";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
 
-// Existing skill icons
 const SkillIcons = {
   C: () => (
     <svg viewBox="0 0 50 50" className="w-10 h-10 sm:w-12 sm:h-12">
@@ -336,42 +335,37 @@ const useInViewOnce = (threshold = 0.1, rootMargin = "0px") => {
   return [setRef, isInView];
 };
 
-// Simplified SkillsCard with uniform size
 const SkillsCard = memo(({ index, title }) => {
   const prefersReducedMotion = useReducedMotion();
   const [ref, isInView] = useInViewOnce(0.2);
   const Icon = SkillIcons[title];
 
   return (
-    <motion.div 
+    <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: isInView ? 1 : 0, y: isInView ? 0 : 20 }}
-      transition={{ 
+      transition={{
         duration: 0.3,
         delay: Math.min(index * 0.03, 0.3),
-        ease: "easeOut"
+        ease: "easeOut",
       }}
       className="group"
       whileHover={{ y: -5 }}
-      style={{ willChange: 'transform' }}
+      style={{ willChange: "transform" }}
     >
-      {/* Fixed height and width container to ensure uniform sizing */}
       <div className="h-36 sm:h-40 w-full">
         <div className="h-full w-full bg-gradient-to-br from-violet-600 via-indigo-700 to-blue-800 p-[1px] rounded-[20px] shadow-md">
           <div className="bg-gray-900 rounded-[20px] p-4 flex flex-col justify-between items-center h-full">
-            
-            {/* Fixed height container for icon */}
             <div className="flex items-center justify-center h-20 transform transition-transform duration-300 group-hover:scale-110">
               {Icon && <Icon />}
             </div>
-            
-            {/* Fixed height container for title */}
+
             <div className="h-8 flex flex-col justify-center items-center">
               <h3 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-violet-400 to-purple-400 text-sm sm:text-base font-medium text-center truncate max-w-full">
                 {title}
               </h3>
-              
+
               <div className="h-0.5 w-0 bg-gradient-to-r from-violet-500 via-blue-400 to-blue-500 mt-1 group-hover:w-full transition-all duration-300"></div>
             </div>
           </div>
@@ -414,8 +408,8 @@ const Skills = () => {
           >
             Skills.
           </motion.h2>
-          
-          <motion.div 
+
+          <motion.div
             className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto mt-2 sm:mt-3 text-center px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
