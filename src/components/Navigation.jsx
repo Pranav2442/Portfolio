@@ -22,10 +22,12 @@ const Navigation = () => {
     <div
       className={`
         fixed top-0 z-40 w-full backdrop-blur-sm bg-transparent
-        transform transition-transform duration-500 ease-in-out
+        transform transition-all duration-500 ease-in-out
         ${scrolled ? "-translate-y-full" : "translate-y-0"}
       `}
     >
+      <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-violet-500 via-blue-500 to-purple-600 animate-gradient-x"></div>
+
       <div className="relative h-16 sm:h-20">
         <div className="relative h-full px-4 sm:px-6 md:px-16">
           <div className="h-full w-full max-w-7xl mx-auto flex items-center justify-between">
@@ -116,29 +118,35 @@ const Navigation = () => {
               </div>
             </button>
 
-            <div className="flex items-center h-6 sm:h-8 gap-0.5">
-              {[...Array(12)].map((_, i) => (
-                <div
-                  key={i}
-                  className="h-full w-0.5 sm:w-0.5 bg-gradient-to-b from-indigo-400/50 to-violet-500/50 rounded-full"
-                  style={{
-                    animation: `wave ${1 + Math.random() * 0.5}s ease-in-out infinite alternate`,
-                    animationDelay: `${i * 0.05}s`,
-                    opacity: 0.5 + Math.random() * 0.5
-                  }}
-                ></div>
-              ))}
-              {[...Array(8)].map((_, i) => (
-                <div
-                  key={i + 12}
-                  className="h-full w-0.5 hidden sm:block bg-gradient-to-b from-indigo-400/50 to-violet-500/50 rounded-full"
-                  style={{
-                    animation: `wave ${1 + Math.random() * 0.5}s ease-in-out infinite alternate`,
-                    animationDelay: `${(i + 12) * 0.05}s`,
-                    opacity: 0.5 + Math.random() * 0.5
-                  }}
-                ></div>
-              ))}
+            <div className="flex items-center">
+              <div className="flex items-center h-6 sm:h-8 gap-0.5">
+                {[...Array(10)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-full w-0.5 sm:w-0.5 bg-gradient-to-b from-indigo-400/50 to-violet-500/50 rounded-full"
+                    style={{
+                      animation: `wave ${
+                        1 + Math.random() * 0.5
+                      }s ease-in-out infinite alternate`,
+                      animationDelay: `${i * 0.05}s`,
+                      opacity: 0.5 + Math.random() * 0.5,
+                    }}
+                  ></div>
+                ))}
+                {[...Array(6)].map((_, i) => (
+                  <div
+                    key={i + 10}
+                    className="h-full w-0.5 hidden sm:block bg-gradient-to-b from-indigo-400/50 to-violet-500/50 rounded-full"
+                    style={{
+                      animation: `wave ${
+                        1 + Math.random() * 0.5
+                      }s ease-in-out infinite alternate`,
+                      animationDelay: `${(i + 10) * 0.05}s`,
+                      opacity: 0.5 + Math.random() * 0.5,
+                    }}
+                  ></div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -152,6 +160,23 @@ const Navigation = () => {
           100% {
             transform: scaleY(1);
           }
+        }
+
+        @keyframes gradient-x {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        .animate-gradient-x {
+          background-size: 200% 200%;
+          animation: gradient-x 3s ease infinite;
         }
       `}</style>
     </div>
