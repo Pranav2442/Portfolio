@@ -184,303 +184,308 @@ const Tech = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex items-center justify-center p-4 relative overflow-hidden sm:p-4 md:p-6">
-      {dialogues.map((dialogue, index) => (
-        <motion.div
-          key={index}
-          className={`absolute flex items-center gap-2 sm:gap-4 bg-gray-900/30 backdrop-blur-md 
+    <div className="w-full h-screen flex items-center justify-center p-4 relative overflow-hidden sm:p-4 md:p-6">
+      <div className="w-full h-full max-h-screen flex items-center justify-center relative">
+        {dialogues.map((dialogue, index) => (
+          <motion.div
+            key={index}
+            className={`absolute flex items-center gap-2 sm:gap-4 bg-gray-900/30 backdrop-blur-md 
                      p-2 sm:p-4 rounded-xl border border-white/5 cursor-pointer
                      hover:bg-gray-800/40 transition-colors duration-300
                      ${hoveredBox === index ? "z-50 scale-110" : "z-30"}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{
+              opacity: 1,
+              y: 0,
+              x: [0, hoveredBox === index ? 0 : 10, 0],
+              y: [0, hoveredBox === index ? 0 : -5, 0],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              repeatType: "reverse",
+              delay: index * 0.2,
+            }}
+            style={{
+              top: dialogue.position.top,
+              left: dialogue.position.left,
+            }}
+            onHoverStart={() => setHoveredBox(index)}
+            onHoverEnd={() => setHoveredBox(null)}
+          >
+            <div
+              className={`w-10 h-10 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-gradient-to-r ${
+                dialogue.color
+              }
+                            flex items-center justify-center transform 
+                            transition-transform duration-300
+                            ${hoveredBox === index ? "scale-110" : ""}`}
+            >
+              {React.createElement(dialogue.icon, {
+                size: isMobile ? 20 : 28,
+                className: "text-white",
+              })}
+            </div>
+            <div className="hidden sm:block">
+              <h3 className="text-white font-bold text-base lg:text-lg">
+                {dialogue.text}
+              </h3>
+              <p className="text-white/70 text-xs lg:text-sm">
+                {dialogue.subtext}
+              </p>
+            </div>
+          </motion.div>
+        ))}
+
+        <motion.div
+          className="w-[99%] sm:w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
+                     border border-white/5 shadow-2xl z-40 relative group mx-auto mt-15 sm:mt-0
+                     max-h-[80vh]" 
           initial={{ opacity: 0, y: 20 }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            x: [0, hoveredBox === index ? 0 : 10, 0],
-            y: [0, hoveredBox === index ? 0 : -5, 0],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            repeatType: "reverse",
-            delay: index * 0.2,
-          }}
-          style={{
-            top: dialogue.position.top,
-            left: dialogue.position.left,
-          }}
-          onHoverStart={() => setHoveredBox(index)}
-          onHoverEnd={() => setHoveredBox(null)}
+          animate={{ opacity: 1, y: 0 }}
         >
           <div
-            className={`w-10 h-10 sm:w-14 sm:h-14 rounded-lg sm:rounded-xl bg-gradient-to-r ${
-              dialogue.color
-            }
-                          flex items-center justify-center transform 
-                          transition-transform duration-300
-                          ${hoveredBox === index ? "scale-110" : ""}`}
-          >
-            {React.createElement(dialogue.icon, {
-              size: isMobile ? 20 : 28,
-              className: "text-white",
-            })}
-          </div>
-          <div className="hidden sm:block">
-            <h3 className="text-white font-bold text-base lg:text-lg">
-              {dialogue.text}
-            </h3>
-            <p className="text-white/70 text-xs lg:text-sm">
-              {dialogue.subtext}
-            </p>
-          </div>
-        </motion.div>
-      ))}
+            className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-xl"
+            style={{ animation: "borderGlow 2s ease-in-out infinite" }}
+          />
+          <div
+            className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/30 rounded-tr-xl"
+            style={{
+              animation: "borderGlow 2s ease-in-out infinite",
+              animationDelay: "0.5s",
+            }}
+          />
+          <div
+            className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/30 rounded-bl-xl"
+            style={{
+              animation: "borderGlow 2s ease-in-out infinite",
+              animationDelay: "1s",
+            }}
+          />
+          <div
+            className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl"
+            style={{
+              animation: "borderGlow 2s ease-in-out infinite",
+              animationDelay: "1.5s",
+            }}
+          />
 
-      <motion.div
-        className="w-[99%] sm:w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
-                   border border-white/5 shadow-2xl z-40 relative group mx-auto mt-15 sm:mt-0"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <div
-          className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-cyan-500/30 rounded-tl-xl"
-          style={{ animation: "borderGlow 2s ease-in-out infinite" }}
-        />
-        <div
-          className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-cyan-500/30 rounded-tr-xl"
-          style={{
-            animation: "borderGlow 2s ease-in-out infinite",
-            animationDelay: "0.5s",
-          }}
-        />
-        <div
-          className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-cyan-500/30 rounded-bl-xl"
-          style={{
-            animation: "borderGlow 2s ease-in-out infinite",
-            animationDelay: "1s",
-          }}
-        />
-        <div
-          className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-cyan-500/30 rounded-br-xl"
-          style={{
-            animation: "borderGlow 2s ease-in-out infinite",
-            animationDelay: "1.5s",
-          }}
-        />
+          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+          <div className="relative flex items-center gap-3 px-4 h-8 sm:h-10 md:h-12 sm:px-6 bg-black/10 border-b border-white/5">
+            <div className="absolute inset-0 overflow-hidden opacity-10">
+              <div className="binary-rain">
+                {Array.from({ length: 50 }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute text-[10px] text-cyan-500 font-mono whitespace-nowrap"
+                    style={{
+                      left: `${i * 10}%`,
+                      animation: `binaryRain ${
+                        1 + Math.random() * 3
+                      }s linear infinite`,
+                      animationDelay: `${Math.random() * 2}s`,
+                    }}
+                  >
+                    {binaryStream}
+                  </div>
+                ))}
+              </div>
+            </div>
 
-        <div className="relative flex items-center gap-3 px-4 h-8 sm:h-10 md:h-12 sm:px-6 bg-black/10 border-b border-white/5">
-          <div className="absolute inset-0 overflow-hidden opacity-10">
-            <div className="binary-rain">
-              {Array.from({ length: 50 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute text-[10px] text-cyan-500 font-mono whitespace-nowrap"
-                  style={{
-                    left: `${i * 10}%`,
-                    animation: `binaryRain ${
-                      1 + Math.random() * 3
-                    }s linear infinite`,
-                    animationDelay: `${Math.random() * 2}s`,
-                  }}
-                >
-                  {binaryStream}
+            <div className="flex gap-2 relative z-10">
+              <motion.div
+                className="w-3 h-3 rounded-full bg-red-500/70 relative group"
+                whileHover={{ scale: 1.2 }}
+              >
+                <div className="absolute inset-0 rounded-full bg-red-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+              <motion.div
+                className="w-3 h-3 rounded-full bg-yellow-500/70 relative group"
+                whileHover={{ scale: 1.2 }}
+              >
+                <div className="absolute inset-0 rounded-full bg-yellow-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+              <motion.div
+                className="w-3 h-3 rounded-full bg-green-500/70 relative group"
+                whileHover={{ scale: 1.2 }}
+              >
+                <div className="absolute inset-0 rounded-full bg-green-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
+              </motion.div>
+            </div>
+
+            <div className="flex-1 text-center flex items-center justify-center gap-1 sm:gap-2 relative z-10">
+              <Terminal size={14} className="text-white/50" />
+              <span className="text-xs sm:text-sm text-white/50 font-mono">
+                quantum_dev.ts
+              </span>
+              <Binary size={12} className="text-cyan-400 hidden sm:block" />
+              <Zap size={12} className="text-yellow-400 hidden sm:block" />
+            </div>
+
+            <div className="flex items-center gap-4 relative z-10">
+              {(!isMobile || isComplete || skipAnimation) && (
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <div
+                      className="w-2 h-2 rounded-full bg-purple-500"
+                      style={{ animation: "pulse 2s ease-in-out infinite" }}
+                    />
+                    <div
+                      className="absolute inset-0 rounded-full bg-purple-500 blur-sm opacity-50"
+                      style={{ animation: "pulse 2s ease-in-out infinite" }}
+                    />
+                  </div>
+                  <span className="text-xs text-purple-500 font-mono">
+                    LIVE
+                  </span>
                 </div>
-              ))}
+              )}
+
+              {!isComplete && !skipAnimation && (
+                <motion.button
+                  onClick={handleSkip}
+                  className={`flex items-center gap-1.5 bg-gray-900/80 backdrop-blur-md
+                      text-white px-2 py-0.5 rounded-full
+                      border border-cyan-500/30 shadow-md shadow-cyan-500/20
+                      hover:bg-gray-800/90 transition-all duration-300 group
+                      ${
+                        isMobile
+                          ? "text-[10px] scale-90"
+                          : "text-xs px-2.5 py-1 ml-3"
+                      }`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  whileHover={{ scale: isMobile ? 0.95 : 1.05 }}
+                  whileTap={{ scale: isMobile ? 0.85 : 0.95 }}
+                >
+                  <div
+                    className={`relative ${
+                      isMobile ? "w-3 h-3" : "w-3.5 h-3.5"
+                    } flex items-center justify-center`}
+                  >
+                    <FastForward
+                      size={isMobile ? 10 : 12}
+                      className="text-cyan-400 relative z-10"
+                    />
+                    <div
+                      className="absolute inset-0 bg-cyan-500/40 rounded-full blur-md 
+                              group-hover:bg-cyan-400/60 transition-all duration-300"
+                    />
+                  </div>
+                  <span
+                    className={`font-medium tracking-wide relative 
+              ${isMobile ? "text-[10px]" : "text-xs"}
+            `}
+                  >
+                    Skip
+                    <span
+                      className="absolute -bottom-[2px] left-0 w-0 h-[1px] bg-gradient-to-r from-cyan-500 to-blue-500 
+                              group-hover:w-full transition-all duration-300"
+                    ></span>
+                  </span>
+                </motion.button>
+              )}
             </div>
           </div>
 
-          <div className="flex gap-2 relative z-10">
-            <motion.div
-              className="w-3 h-3 rounded-full bg-red-500/70 relative group"
-              whileHover={{ scale: 1.2 }}
+          <div className="p-2 sm:p-4 md:p-6 font-mono text-[11px] sm:text-[13px] md:text-[15px] relative overflow-x-auto overflow-y-auto max-h-[calc(80vh-3rem)]">
+            <div
+              className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 md:w-12 flex flex-col items-end pr-1 sm:pr-2 md:pr-4 
+                          border-r border-white/5 "
             >
-              <div className="absolute inset-0 rounded-full bg-red-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
-            </motion.div>
-            <motion.div
-              className="w-3 h-3 rounded-full bg-yellow-500/70 relative group"
-              whileHover={{ scale: 1.2 }}
-            >
-              <div className="absolute inset-0 rounded-full bg-yellow-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
-            </motion.div>
-            <motion.div
-              className="w-3 h-3 rounded-full bg-green-500/70 relative group"
-              whileHover={{ scale: 1.2 }}
-            >
-              <div className="absolute inset-0 rounded-full bg-green-500 blur-sm opacity-50 group-hover:opacity-100 transition-opacity" />
-            </motion.div>
-          </div>
-
-          <div className="flex-1 text-center flex items-center justify-center gap-1 sm:gap-2 relative z-10">
-            <Terminal size={14} className="text-white/50" />
-            <span className="text-xs sm:text-sm text-white/50 font-mono">
-              quantum_dev.ts
-            </span>
-            <Binary size={12} className="text-cyan-400 hidden sm:block" />
-            <Zap size={12} className="text-yellow-400 hidden sm:block" />
-          </div>
-
-          <div className="flex items-center gap-4 relative z-10">
-            {(!isMobile || isComplete || skipAnimation) && (
-              <div className="flex items-center gap-2">
-                <div className="relative">
-                  <div
-                    className="w-2 h-2 rounded-full bg-purple-500"
-                    style={{ animation: "pulse 2s ease-in-out infinite" }}
-                  />
-                  <div
-                    className="absolute inset-0 rounded-full bg-purple-500 blur-sm opacity-50"
-                    style={{ animation: "pulse 2s ease-in-out infinite" }}
-                  />
-                </div>
-                <span className="text-xs text-purple-500 font-mono">LIVE</span>
-              </div>
-            )}
-
-            {!isComplete && !skipAnimation && (
-              <motion.button
-                onClick={handleSkip}
-                className={`flex items-center gap-1.5 bg-gray-900/80 backdrop-blur-md
-                    text-white px-2 py-0.5 rounded-full
-                    border border-cyan-500/30 shadow-md shadow-cyan-500/20
-                    hover:bg-gray-800/90 transition-all duration-300 group
-                    ${
-                      isMobile
-                        ? "text-[10px] scale-90"
-                        : "text-xs px-2.5 py-1 ml-3"
-                    }`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                whileHover={{ scale: isMobile ? 0.95 : 1.05 }}
-                whileTap={{ scale: isMobile ? 0.85 : 0.95 }}
-              >
+              {codeContent.map((_, i) => (
                 <div
-                  className={`relative ${
-                    isMobile ? "w-3 h-3" : "w-3.5 h-3.5"
-                  } flex items-center justify-center`}
+                  key={i}
+                  className="h-6 sm:h-6 md:h-6 flex items-center text-[10px] font-light text-cyan-500/50"
                 >
-                  <FastForward
-                    size={isMobile ? 10 : 12}
-                    className="text-cyan-400 relative z-10"
-                  />
-                  <div
-                    className="absolute inset-0 bg-cyan-500/40 rounded-full blur-md 
-                            group-hover:bg-cyan-400/60 transition-all duration-300"
-                  />
+                  {String(i + 1).padStart(3, "0")}
                 </div>
-                <span
-                  className={`font-medium tracking-wide relative 
-            ${isMobile ? "text-[10px]" : "text-xs"}
-          `}
+              ))}
+            </div>
+
+            <div className="pl-8 sm:pl-12 md:pl-16 min-w-[280px] sm:min-w-[400px] md:min-w-[500px] max-w-full">
+              {codeContent.map((line, index) => (
+                <motion.pre
+                  key={index}
+                  className={`min-h-[24px] sm:min-h-[24px] md:min-h-[24px] py-0 sm:py-0 md:py-0 tracking-wide whitespace-pre-wrap break-all ${
+                    line.includes("*")
+                      ? "text-blue-400"
+                      : line.startsWith("const")
+                      ? "text-purple-400"
+                      : line.includes(":")
+                      ? "text-cyan-300"
+                      : line.includes('"')
+                      ? "text-emerald-300"
+                      : line.includes("//")
+                      ? "text-gray-400"
+                      : "text-white/90"
+                  } relative group hover:bg-white/5 rounded transition-colors duration-150`}
                 >
-                  Skip
-                  <span
-                    className="absolute -bottom-[2px] left-0 w-0 h-[1px] bg-gradient-to-r from-cyan-500 to-blue-500 
-                            group-hover:w-full transition-all duration-300"
-                  ></span>
-                </span>
-              </motion.button>
-            )}
-          </div>
-        </div>
+                  <code className="relative z-10 break-words overflow-hidden">
+                    {(index < currentLineIndex || skipAnimation) && line}
+                    {index === currentLineIndex && !skipAnimation && (
+                      <>
+                        {line.slice(0, currentCharIndex)}
+                        <motion.span
+                          className="inline-block w-[2px] h-3 sm:h-4 bg-cyan-400 relative top-[2px]"
+                          animate={{ opacity: [1, 0] }}
+                          transition={{ duration: 0.6, repeat: Infinity }}
+                        />
+                      </>
+                    )}
+                  </code>
 
-        <div className="p-2 sm:p-4 md:p-6 font-mono text-[11px] sm:text-[13px] md:text-[15px] relative overflow-x-auto">
-          <div
-            className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 md:w-12 flex flex-col items-end pr-1 sm:pr-2 md:pr-4 
-                        border-r border-white/5 "
-          >
-            {codeContent.map((_, i) => (
+                  <motion.div
+                    className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 
+                             transition-opacity rounded-sm"
+                  />
+                </motion.pre>
+              ))}
+            </div>
+
+            <div className="absolute inset-0 pointer-events-none">
               <div
-                key={i}
-                className="h-6 sm:h-6 md:h-6 flex items-center text-[10px] font-light text-cyan-500/50"
-              >
-                {String(i + 1).padStart(3, "0")}
-              </div>
-            ))}
+                className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent opacity-50"
+                style={{ animation: "glow 3s ease-in-out infinite" }}
+              />
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent opacity-30"
+                style={{ animation: "glow 4s ease-in-out infinite" }}
+              />
+            </div>
           </div>
 
-          <div className="pl-8 sm:pl-12 md:pl-16 min-w-[280px] sm:min-w-[400px] md:min-w-[500px] max-w-full">
-            {codeContent.map((line, index) => (
-              <motion.pre
-                key={index}
-                className={`min-h-[24px] sm:min-h-[24px] md:min-h-[24px] py-0 sm:py-0 md:py-0 tracking-wide whitespace-pre-wrap break-all ${
-                  line.includes("*")
-                    ? "text-blue-400"
-                    : line.startsWith("const")
-                    ? "text-purple-400"
-                    : line.includes(":")
-                    ? "text-cyan-300"
-                    : line.includes('"')
-                    ? "text-emerald-300"
-                    : line.includes("//")
-                    ? "text-gray-400"
-                    : "text-white/90"
-                } relative group hover:bg-white/5 rounded transition-colors duration-150`}
-              >
-                <code className="relative z-10 break-words overflow-hidden">
-                  {(index < currentLineIndex || skipAnimation) && line}
-                  {index === currentLineIndex && !skipAnimation && (
-                    <>
-                      {line.slice(0, currentCharIndex)}
-                      <motion.span
-                        className="inline-block w-[2px] h-3 sm:h-4 bg-cyan-400 relative top-[2px]"
-                        animate={{ opacity: [1, 0] }}
-                        transition={{ duration: 0.6, repeat: Infinity }}
-                      />
-                    </>
-                  )}
-                </code>
-
-                <motion.div
-                  className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 
-                           transition-opacity rounded-sm"
-                />
-              </motion.pre>
-            ))}
-          </div>
-
-          <div className="absolute inset-0 pointer-events-none">
-            <div
-              className="absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/5 to-transparent opacity-50"
-              style={{ animation: "glow 3s ease-in-out infinite" }}
+          <div className="relative h-1">
+            <motion.div
+              className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"
+              initial={{ width: "0%" }}
+              animate={{
+                width: isComplete
+                  ? "100%"
+                  : `${(currentLineIndex / codeContent.length) * 100}%`,
+              }}
             />
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/5 to-transparent opacity-30"
-              style={{ animation: "glow 4s ease-in-out infinite" }}
+
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+              animate={{
+                x: [-100, 100],
+                opacity: [0, 1, 0],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "linear",
+              }}
             />
+
+            <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 blur-sm" />
           </div>
-        </div>
 
-        <div className="relative h-1">
-          <motion.div
-            className="absolute inset-y-0 left-0 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500"
-            initial={{ width: "0%" }}
-            animate={{
-              width: isComplete
-                ? "100%"
-                : `${(currentLineIndex / codeContent.length) * 100}%`,
-            }}
-          />
-
-          <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
-            animate={{
-              x: [-100, 100],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 2,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-purple-500/20 blur-sm" />
-        </div>
-
-        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/0 via-white/5 to-purple-500/0 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      </motion.div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500/0 via-white/5 to-purple-500/0 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        </motion.div>
+      </div>
     </div>
   );
 };
