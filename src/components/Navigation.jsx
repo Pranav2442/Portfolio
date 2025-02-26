@@ -10,14 +10,12 @@ const Navigation = () => {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const scrollHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-
-      const progress =
-        scrollHeight > 0 ? (currentScrollY / scrollHeight) * 100 : 0;
+      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      
+      const progress = scrollHeight > 0 ? (currentScrollY / scrollHeight) * 100 : 0;
       setScrollProgress(progress);
-
-      setScrolled(currentScrollY > 20);
+      
+      setScrolled(currentScrollY > 10); 
     };
 
     handleScroll();
@@ -28,17 +26,16 @@ const Navigation = () => {
 
   return (
     <>
-      <div
-        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-violet-600 via-indigo-700 to-blue-800 shadow-[0_0_10px_rgba(139,92,246,0.5)]"
-        style={{ width: `${scrollProgress}%` }}
+      <div 
+        className="fixed top-0 left-0 right-0 z-50 h-1 bg-gradient-to-r from-violet-600 via-indigo-700 to-blue-800 shadow-[0_0_10px_rgba(139,92,246,0.5)]" 
+        style={{ width: `${scrollProgress}%` }} 
       />
-
+      
       <div
         className={`
           fixed top-0 z-40 w-full backdrop-blur-sm bg-transparent
           transform transition-transform duration-500 ease-in-out
           ${scrolled ? "-translate-y-full" : "translate-y-0"}
-          border-b border-violet-500/10
         `}
       >
         <div className="relative h-16 sm:h-20">
@@ -71,25 +68,17 @@ const Navigation = () => {
                       className={`
                         absolute -right-1 -top-1
                         transition-all duration-300 transform
-                        ${
-                          isHovered
-                            ? "scale-125 rotate-12"
-                            : "scale-100 rotate-0"
-                        }
+                        ${isHovered ? "scale-125 rotate-12" : "scale-100 rotate-0"}
                       `}
                     >
                       <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-violet-300 animate-pulse" />
                     </div>
-
+                    
                     <div
                       className={`
                         absolute -left-1 -bottom-1
                         transition-all duration-500 transform
-                        ${
-                          isHovered
-                            ? "scale-110 opacity-100"
-                            : "scale-0 opacity-0"
-                        }
+                        ${isHovered ? "scale-110 opacity-100" : "scale-0 opacity-0"}
                       `}
                     >
                       <Sparkles className="w-2 h-2 sm:w-3 sm:h-3 text-blue-300" />
@@ -117,11 +106,7 @@ const Navigation = () => {
                     <div
                       className={`
                         overflow-hidden transition-all duration-500 ease-out
-                        ${
-                          isHovered
-                            ? "max-h-20 opacity-100 translate-y-0"
-                            : "max-h-0 opacity-0 -translate-y-2"
-                        }
+                        ${isHovered ? "max-h-20 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-2"}
                       `}
                     >
                       <p className="text-xs sm:text-sm font-medium text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-violet-400 mt-1 flex items-center">
