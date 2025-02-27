@@ -6,19 +6,15 @@ import * as random from "maath/random/dist/maath-random.esm";
 const Stars = (props) => {
   const ref = useRef();
   const [sphere] = useState(() => {
-    // Create sphere only once during initial render
     return random.inSphere(new Float32Array(2000), { radius: 1.2 });
   });
 
-  // Optimize performance with useCallback for animation
   useFrame((state, delta) => {
     if (!ref.current) return;
     
-    // Use requestAnimationFrame to ensure smooth animation
     const animate = () => {
       if (!ref.current) return;
       
-      // Adjusted rotation speed and made it device-independent
       const baseSpeed = 0.15;
       ref.current.rotation.x -= delta * baseSpeed;
       ref.current.rotation.y -= delta * baseSpeed;
@@ -39,11 +35,11 @@ const Stars = (props) => {
         <PointMaterial
           transparent
           color="red"
-          size={0.003} // Slightly increased size for better visibility on mobile
+          size={0.003} 
           sizeAttenuation={true}
           depthWrite={false}
-          alphaTest={0.5} // Added for better performance
-          alphaToCoverage={true} // Added for smoother rendering
+          alphaTest={0.5}
+          alphaToCoverage={true} 
         />
       </Points>
     </group>
