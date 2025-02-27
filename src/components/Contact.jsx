@@ -41,70 +41,103 @@ const Contact = () => {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      y: 50,
+      opacity: 0,
+      scale: 0.5,
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 10,
+      },
+    },
+    hover: {
+      scale: 1.15,
+      rotate: [0, -10, 10, 0],
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        duration: 0.3,
+      },
+    },
+    tap: {
+      scale: 0.95,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+      },
+    },
+  };
+
   return (
-    <div className="py-16 px-4">
+    <div className="py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-4xl font-bold text-center text-white mb-3"
+          transition={{
+            type: "spring",
+            stiffness: 200,
+            damping: 10,
+          }}
+          className="text-3xl sm:text-4xl font-bold text-center text-white mb-8 sm:mb-12"
         >
           Contact Me
         </motion.h2>
+
         <motion.div
-          className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-violet-500 to-blue-500 mx-auto mt-3 sm:mt-4 rounded-full relative overflow-hidden mb-5"
-          initial={{ width: 0, opacity: 0 }}
-          animate={{ width: "100%", opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.6 }}
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex overflow-x-auto justify-center items-center space-x-4 sm:space-x-6 pb-2"
         >
-          <motion.div
-            className="absolute inset-0 bg-white/50"
-            animate={{
-              x: ["-100%", "100%"],
-            }}
-            transition={{
-              repeat: Infinity,
-              duration: 2,
-              ease: "linear",
-            }}
-          />
-        </motion.div>
-        
-        <div className="flex justify-center items-center space-x-6">
           {contacts.map((contact, index) => (
             <motion.a
               key={contact.name}
               href={contact.link}
               target="_blank"
               rel="noopener noreferrer"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.1 
-              }}
+              variants={itemVariants}
+              whileHover="hover"
+              whileTap="tap"
               className={`
                 bg-gradient-to-br ${contact.gradientFrom} ${contact.gradientTo}
                 text-white
                 rounded-full 
-                p-3 
+                flex-shrink-0
+                p-2 sm:p-3 
                 flex 
                 items-center 
                 justify-center 
-                hover:scale-110 
-                transition-transform 
-                duration-300 
                 shadow-lg
                 hover:shadow-xl
                 group
+                w-10 h-10 sm:w-14 sm:h-14
+                cursor-pointer
               `}
               title={contact.name}
             >
-              <contact.icon className="w-8 h-8 group-hover:rotate-12 transition-transform duration-300" />
+              <contact.icon className="w-5 h-5 sm:w-8 sm:h-8 transition-transform duration-300 group-hover:rotate-12" />
             </motion.a>
           ))}
-        </div>
+        </motion.div>
       </div>
     </div>
   );
