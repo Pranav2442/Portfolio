@@ -6,64 +6,107 @@ const Contact = () => {
   const contacts = [
     {
       name: "Github",
-      icon: <Github className="w-6 h-6 md:w-8 md:h-8 text-white" />,
+      icon: Github,
       link: "https://github.com/Pranav2442",
+      gradientFrom: "from-purple-600",
+      gradientTo: "to-purple-500",
     },
     {
       name: "LinkedIn",
-      icon: <Linkedin className="w-6 h-6 md:w-8 md:h-8 text-blue-600" />,
+      icon: Linkedin,
       link: "https://www.linkedin.com/in/pranav-mailarpawar-529ab9203/",
+      gradientFrom: "from-purple-500",
+      gradientTo: "to-blue-500",
     },
     {
       name: "Gmail",
-      icon: <Mail className="w-6 h-6 md:w-8 md:h-8 text-orange-500" />,
+      icon: Mail,
       link: "mailto:pranavpawar2442@gmail.com",
+      gradientFrom: "from-blue-500",
+      gradientTo: "to-blue-600",
     },
     {
       name: "Pixel Lens",
-      icon: (
-        <Camera className="w-6 h-6 md:w-8 md:h-8 bg-gradient-to-r from-purple-500 to-pink-500" />
-      ),
+      icon: Camera,
       link: "https://pixel-lens.netlify.app/",
+      gradientFrom: "from-blue-600",
+      gradientTo: "to-indigo-600",
     },
     {
       name: "YouTube",
-      icon: <Youtube className="w-6 h-6 md:w-8 md:h-8 text-red-600" />,
+      icon: Youtube,
       link: "https://www.youtube.com/@pranavmailarpawar5900/videos",
+      gradientFrom: "from-indigo-600",
+      gradientTo: "to-purple-600",
     },
   ];
 
   return (
-    <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-center mb-4 sm:mb-6 lg:mb-8 bg-clip-text text-transparent text-white">
-        <motion.h2
-          className="text-white text-2xl md:text-5xl lg:text-6xl font-bold mb-4"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
+    <div className="py-16 px-4">
+      <div className="max-w-4xl mx-auto">
+        <motion.h2 
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-4xl font-bold text-center text-white mb-3"
         >
           Contact Me
         </motion.h2>
-        <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-indigo-600 blur-lg opacity-20 -z-10" />
-      </h2>
-
-      <div className="flex flex-wrap sm:flex-nowrap justify-center items-center gap-4 sm:gap-6 md:gap-8 lg:gap-12">
-        {contacts.map((contact) => (
-          <a
-            key={contact.name}
-            href={contact.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-col items-center justify-center p-3 transition-transform duration-300 hover:scale-110"
-          >
-            {contact.icon}
-            <span className="mt-2 text-xs sm:text-sm font-medium text-gray-300 hover:text-white">
-              {contact.name}
-            </span>
-          </a>
-        ))}
+        <motion.div
+          className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-violet-500 to-blue-500 mx-auto mt-3 sm:mt-4 rounded-full relative overflow-hidden mb-5"
+          initial={{ width: 0, opacity: 0 }}
+          animate={{ width: "100%", opacity: 1 }}
+          transition={{ delay: 0.3, duration: 0.6 }}
+        >
+          <motion.div
+            className="absolute inset-0 bg-white/50"
+            animate={{
+              x: ["-100%", "100%"],
+            }}
+            transition={{
+              repeat: Infinity,
+              duration: 2,
+              ease: "linear",
+            }}
+          />
+        </motion.div>
+        
+        <div className="flex justify-center items-center space-x-6">
+          {contacts.map((contact, index) => (
+            <motion.a
+              key={contact.name}
+              href={contact.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ 
+                duration: 0.5, 
+                delay: index * 0.1 
+              }}
+              className={`
+                bg-gradient-to-br ${contact.gradientFrom} ${contact.gradientTo}
+                text-white
+                rounded-full 
+                p-3 
+                flex 
+                items-center 
+                justify-center 
+                hover:scale-110 
+                transition-transform 
+                duration-300 
+                shadow-lg
+                hover:shadow-xl
+                group
+              `}
+              title={contact.name}
+            >
+              <contact.icon className="w-8 h-8 group-hover:rotate-12 transition-transform duration-300" />
+            </motion.a>
+          ))}
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 
