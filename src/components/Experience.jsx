@@ -77,7 +77,7 @@ const ExperienceCard = memo(
             {experience.title}
           </p>
 
-          <ul className="space-y-3 pl-4 sm:pl-5">
+          <ul className="space-y-3 pl-1 sm:pl-4">
             {experience.points.map((point, index) => (
               <motion.li
                 key={`experience-point-${index}`}
@@ -97,9 +97,9 @@ const ExperienceCard = memo(
                 }}
                 className="flex items-start space-x-2 sm:space-x-3 text-gray-300 hover:text-white transition-colors duration-300"
               >
-                <span className="inline-block flex-shrink-0 w-2 h-2 mt-1.5 sm:mt-2.5 rounded-full bg-gradient-to-r from-violet-500 to-blue-500" />
+                <span className="inline-block flex-shrink-0 w-2 h-2 rounded-full bg-gradient-to-r from-violet-500 to-blue-500" style={{ marginTop: "0.6em" }} />
 
-                <span className="text-sm md:text-base lg:text-lg tracking-wide flex-1 leading-tight sm:leading-normal">
+                <span className="text-sm md:text-base lg:text-lg tracking-wide flex-1 leading-normal">
                   {point}
                 </span>
               </motion.li>
