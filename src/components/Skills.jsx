@@ -406,7 +406,7 @@ const Skills = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Skills.
+            Skills
           </motion.h2>
 
           <motion.div

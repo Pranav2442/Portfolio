@@ -22,15 +22,16 @@ const ExperienceCard = memo(
     return (
       <VerticalTimelineElement
         contentStyle={{
-          background: "rgba(17, 24, 39, 0.8)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.1)",
+          background: "rgba(17, 24, 39, 0.9)",
+          backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255, 255, 255, 0.15)",
           boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.37)",
           color: "#fff",
           padding: "1.5rem",
+          borderRadius: "12px",
         }}
         contentArrowStyle={{
-          borderRight: "10px solid rgba(255, 255, 255, 0.1)",
+          borderRight: "10px solid rgba(255, 255, 255, 0.15)",
         }}
         date={
           <div className="text-sm md:text-base lg:text-lg font-semibold bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
@@ -39,7 +40,8 @@ const ExperienceCard = memo(
         }
         iconStyle={{
           background: "linear-gradient(45deg, #6366f1, #8b5cf6)",
-          boxShadow: "0 0 20px rgba(139, 92, 246, 0.5)",
+          boxShadow: "0 0 12px rgba(139, 92, 246, 0.4)",
+          border: "2px solid rgba(255, 255, 255, 0.15)",
         }}
         icon={
           <div className="flex justify-center items-center w-full h-full transform transition-transform duration-300 hover:scale-110">
@@ -67,14 +69,15 @@ const ExperienceCard = memo(
           }}
           className="group"
         >
-          <h3 className="text-lg md:text-xl lg:text-2xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            {experience.title}
-          </h3>
-          <p className="text-base md:text-lg font-semibold text-gray-300 mb-4 transition-colors duration-300 group-hover:text-purple-400">
+          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
             {experience.company_name}
+          </h3>
+
+          <p className="text-xl md:text-2xl lg:text-3xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+            {experience.title}
           </p>
 
-          <ul className="space-y-3">
+          <ul className="space-y-3 pl-4 sm:pl-5">
             {experience.points.map((point, index) => (
               <motion.li
                 key={`experience-point-${index}`}
@@ -92,10 +95,11 @@ const ExperienceCard = memo(
                     },
                   },
                 }}
-                className="flex items-start space-x-2 text-gray-300 hover:text-white transition-colors duration-300"
+                className="flex items-start space-x-2 sm:space-x-3 text-gray-300 hover:text-white transition-colors duration-300"
               >
-                <span className="inline-block flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-gradient-to-r from-violet-500 via-blue-400 to-blue-500" />
-                <span className="text-xs md:text-sm lg:text-base tracking-wide">
+                <span className="inline-block flex-shrink-0 w-2 h-2 mt-1.5 sm:mt-2.5 rounded-full bg-gradient-to-r from-violet-500 to-blue-500" />
+
+                <span className="text-sm md:text-base lg:text-lg tracking-wide flex-1 leading-tight sm:leading-normal">
                   {point}
                 </span>
               </motion.li>

@@ -52,7 +52,7 @@ const AchievementsShowcase = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          Achievements.
+          Achievements
         </motion.h2>
 
         <motion.div
