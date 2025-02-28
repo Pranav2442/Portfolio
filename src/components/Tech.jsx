@@ -112,8 +112,10 @@ const Tech = () => {
   useEffect(() => {
     const keyframes = `
       @keyframes binaryRain {
-        0% { transform: translateY(-100%); }
-        100% { transform: translateY(100%); }
+        0% { transform: translateY(-100%); opacity: 0.2; }
+        10% { opacity: 0.8; }
+        90% { opacity: 0.8; }
+        100% { transform: translateY(100%); opacity: 0.2; }
       }
       @keyframes scanline {
         0% { transform: translateY(-100%); }
@@ -272,16 +274,16 @@ const Tech = () => {
           <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
           <div className="relative flex items-center gap-3 px-4 h-8 sm:h-10 md:h-12 sm:px-6 bg-black/10 border-b border-white/5">
-            <div className="absolute inset-0 overflow-hidden opacity-10">
+            <div className="absolute inset-0 overflow-hidden opacity-20">
               <div className="binary-rain">
-                {Array.from({ length: 50 }).map((_, i) => (
+                {Array.from({ length: isMobile ? 15 : 30 }).map((_, i) => (
                   <div
                     key={i}
-                    className="absolute text-[10px] text-cyan-500 font-mono whitespace-nowrap"
+                    className="absolute text-[10px] sm:text-xs text-cyan-400 font-mono whitespace-nowrap"
                     style={{
-                      left: `${i * 10}%`,
+                      left: `${i * (isMobile ? 15 : 10)}%`,
                       animation: `binaryRain ${
-                        1 + Math.random() * 3
+                        1.5 + Math.random() * 2
                       }s linear infinite`,
                       animationDelay: `${Math.random() * 2}s`,
                     }}
@@ -374,14 +376,13 @@ const Tech = () => {
                   </div>
                   <span
                     className={`font-medium tracking-wide relative 
-              ${isMobile ? "text-[10px]" : "text-xs"}
-            `}
+                      ${isMobile ? "text-[10px]" : "text-xs"}`}
                   >
                     Skip
                     <span
                       className="absolute -bottom-[2px] left-0 w-0 h-[1px] bg-gradient-to-r from-cyan-500 to-blue-500 
                               group-hover:w-full transition-all duration-300"
-                    ></span>
+                    />
                   </span>
                 </motion.button>
               )}
@@ -389,58 +390,52 @@ const Tech = () => {
           </div>
 
           <div className="p-2 sm:p-4 md:p-6 font-mono text-[11px] sm:text-[13px] md:text-[15px] relative overflow-x-auto overflow-y-auto max-h-[calc(80vh-3rem)]">
-            <div
-              className="absolute left-0 top-0 bottom-0 w-6 sm:w-8 md:w-12 flex flex-col items-end pr-1 sm:pr-2 md:pr-4 
-                          border-r border-white/5 "
-            >
-              {codeContent.map((_, i) => (
-                <div
-                  key={i}
-                  className="h-6 sm:h-6 md:h-6 flex items-center text-[10px] font-light text-cyan-500/50"
-                >
-                  {String(i + 1).padStart(3, "0")}
-                </div>
-              ))}
-            </div>
+            <div className="flex">
+              <div className="flex-shrink-0 border-r border-white/5">
+                {codeContent.map((_, i) => (
+                  <div
+                    key={i}
+                    className="h-6 flex items-center justify-end text-[10px] font-light text-cyan-500/50 w-8 sm:w-10 md:w-12 pr-2"
+                  >
+                    {String(i + 1).padStart(3, "0")}
+                  </div>
+                ))}
+              </div>
 
-            <div className="pl-8 sm:pl-12 md:pl-16 min-w-[280px] sm:min-w-[400px] md:min-w-[500px] max-w-full">
-              {codeContent.map((line, index) => (
-                <motion.pre
-                  key={index}
-                  className={`min-h-[24px] sm:min-h-[24px] md:min-h-[24px] py-0 sm:py-0 md:py-0 tracking-wide whitespace-pre-wrap break-all ${
-                    line.includes("*")
-                      ? "text-blue-400"
-                      : line.startsWith("const")
-                      ? "text-purple-400"
-                      : line.includes(":")
-                      ? "text-cyan-300"
-                      : line.includes('"')
-                      ? "text-emerald-300"
-                      : line.includes("//")
-                      ? "text-gray-400"
-                      : "text-white/90"
-                  } relative group hover:bg-white/5 rounded transition-colors duration-150`}
-                >
-                  <code className="relative z-10 break-words overflow-hidden">
-                    {(index < currentLineIndex || skipAnimation) && line}
-                    {index === currentLineIndex && !skipAnimation && (
-                      <>
-                        {line.slice(0, currentCharIndex)}
-                        <motion.span
-                          className="inline-block w-[2px] h-3 sm:h-4 bg-cyan-400 relative top-[2px]"
-                          animate={{ opacity: [1, 0] }}
-                          transition={{ duration: 0.6, repeat: Infinity }}
-                        />
-                      </>
-                    )}
-                  </code>
-
-                  <motion.div
-                    className="absolute inset-0 bg-cyan-500/5 opacity-0 group-hover:opacity-100 
-                             transition-opacity rounded-sm"
-                  />
-                </motion.pre>
-              ))}
+              <div className="pl-2 sm:pl-3 md:pl-4 flex-1 overflow-hidden">
+                {codeContent.map((line, index) => (
+                  <div
+                    key={index}
+                    className={`h-6 flex items-center ${
+                      line.includes("*")
+                        ? "text-blue-400"
+                        : line.startsWith("const")
+                        ? "text-purple-400"
+                        : line.includes(":")
+                        ? "text-cyan-300"
+                        : line.includes('"')
+                        ? "text-emerald-300"
+                        : line.includes("//")
+                        ? "text-gray-400"
+                        : "text-white/90"
+                    } relative group hover:bg-white/5 rounded transition-colors duration-150`}
+                  >
+                    <code className="relative z-10 whitespace-pre overflow-x-hidden text-ellipsis w-full pl-0.5">
+                      {(index < currentLineIndex || skipAnimation) && line}
+                      {index === currentLineIndex && !skipAnimation && (
+                        <>
+                          {line.slice(0, currentCharIndex)}
+                          <motion.span
+                            className="inline-block w-[2px] h-4 bg-cyan-400 align-middle"
+                            animate={{ opacity: [1, 0] }}
+                            transition={{ duration: 0.6, repeat: Infinity }}
+                          />
+                        </>
+                      )}
+                    </code>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="absolute inset-0 pointer-events-none">
