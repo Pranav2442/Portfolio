@@ -94,7 +94,7 @@ const Tech = () => {
     '    focus: "pixel-perfect",',
     '    approach: "user-centric"',
     "  },",
-    '  mission: "Crafting Tomorrow\'s Tech Today"',
+    '  mission: "Build. Innovate. Scale."',
     "};",
     "",
     "// Transforming ideas into reality 🚀",
