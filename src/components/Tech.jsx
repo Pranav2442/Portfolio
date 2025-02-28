@@ -395,7 +395,7 @@ const Tech = () => {
                 {codeContent.map((_, i) => (
                   <div
                     key={i}
-                    className="h-6 flex items-center justify-end text-[10px] font-light text-cyan-500/50 w-6 sm:w-8 md:w-10 pr-2"
+                    className="h-6 flex items-center justify-end text-[10px] sm:text-[10px] md:text-[10px] font-mono text-cyan-500/50 w-6 sm:w-8 md:w-10 pr-2"
                   >
                     {String(i + 1).padStart(3, "0")}
                   </div>
