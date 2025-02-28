@@ -211,7 +211,7 @@ const Experience = memo(
     return (
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <ResponsiveTimelineStyles />
-        
+
         <motion.div
           variants={textVariant()}
           initial="hidden"

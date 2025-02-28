@@ -196,7 +196,6 @@ const Tech = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{
               opacity: 1,
-              y: 0,
               x: [0, hoveredBox === index ? 0 : 10, 0],
               y: [0, hoveredBox === index ? 0 : -5, 0],
             }}
@@ -240,7 +239,7 @@ const Tech = () => {
         <motion.div
           className="w-[99%] sm:w-full max-w-4xl bg-gray-900/20 backdrop-blur-lg rounded-xl overflow-hidden 
                      border border-white/5 shadow-2xl z-40 relative group mx-auto mt-15 sm:mt-0
-                     max-h-[80vh]" 
+                     max-h-[80vh]"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >

@@ -44,7 +44,7 @@ const Contact = () => {
   return (
     <div className="py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <motion.h2 
+        <motion.h2
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -71,7 +71,7 @@ const Contact = () => {
             }}
           />
         </motion.div>
-        
+
         <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6">
           {contacts.map((contact, index) => (
             <motion.a
@@ -81,9 +81,9 @@ const Contact = () => {
               rel="noopener noreferrer"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ 
-                duration: 0.5, 
-                delay: index * 0.1 
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1,
               }}
               className={`
                 bg-gradient-to-br ${contact.gradientFrom} ${contact.gradientTo}

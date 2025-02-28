@@ -11,10 +11,10 @@ const Stars = (props) => {
 
   useFrame((state, delta) => {
     if (!ref.current) return;
-    
+
     const animate = () => {
       if (!ref.current) return;
-      
+
       const baseSpeed = 0.15;
       ref.current.rotation.x -= delta * baseSpeed;
       ref.current.rotation.y -= delta * baseSpeed;
@@ -25,21 +25,15 @@ const Stars = (props) => {
 
   return (
     <group rotation={[0, 0, Math.PI / 2]}>
-      <Points 
-        ref={ref} 
-        positions={sphere} 
-        stride={3} 
-        frustumCulled 
-        {...props}
-      >
+      <Points ref={ref} positions={sphere} stride={3} frustumCulled {...props}>
         <PointMaterial
           transparent
           color="red"
-          size={0.003} 
+          size={0.003}
           sizeAttenuation={true}
           depthWrite={false}
           alphaTest={0.5}
-          alphaToCoverage={true} 
+          alphaToCoverage={true}
         />
       </Points>
     </group>
@@ -52,9 +46,9 @@ const StarBackground = () => {
       <Canvas
         camera={{ position: [0, 0, 1] }}
         dpr={[1, 2]} // Optimize for device pixel ratio
-        style={{ 
-          touchAction: 'none',
-          WebkitTapHighlightColor: 'transparent' // Prevent tap highlight on mobile
+        style={{
+          touchAction: "none",
+          WebkitTapHighlightColor: "transparent", // Prevent tap highlight on mobile
         }}
         performance={{ min: 0.1 }}
       >
