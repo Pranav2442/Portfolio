@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Sparkles } from "lucide-react";
 import { profile } from "../assets";
+import ScrollIndicator from "./ScrollIndicator";
 
 const Navigation = () => {
   const [isHovered, setIsHovered] = useState(false);
@@ -19,6 +20,7 @@ const Navigation = () => {
   }, []);
 
   return (
+    <>
     <div
       className={`
         fixed top-0 z-40 w-full backdrop-blur-sm bg-transparent
@@ -180,6 +182,8 @@ const Navigation = () => {
         }
       `}</style>
     </div>
+    <ScrollIndicator/>
+    </>
   );
 };
 
