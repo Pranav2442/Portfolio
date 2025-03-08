@@ -218,6 +218,11 @@ import {
       description: "Unleash your creativity—edit, enhance, and transform your photos like a pro!"
     },
     {
+      title: "Atoms: Surge",
+      link: "https://www.atoms-surge.vercel.app",
+      description: "A browser-based chain reaction Multiplayer strategy game featuring mathematically-optimized AI that runs entirely client-side with zero server calls."
+    },
+    {
       title: "Pixel Lens: Capture. Showcase. Inspire.",
       link: "https://www.pixel-lens.netlify.app",
       description: "A dedicated space for photographers—share the moments you poured your heart into capturing!"
