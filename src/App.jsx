@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom"
 import { Navigation, StarBackground, } from "./components";
-import { lazy } from "react";
+import { lazy, useEffect } from "react";
 import AchievementsShowcase from "./components/AchievementsShowcase";
 import Tech from "./components/Tech";
 
@@ -41,6 +41,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="relative z-0 bg-primary">
+      <GoogleAnalytics />
         <div>
         <StarBackground/>
         <Navigation/>
