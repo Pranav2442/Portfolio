@@ -227,7 +227,7 @@ const Experience = memo(
           />
 
           <motion.h2
-            className="text-white font-black text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-center"
+            className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
