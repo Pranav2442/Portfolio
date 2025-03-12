@@ -219,7 +219,7 @@ import {
     },
     {
       title: "Atoms: Surge",
-      link: "https://www.atoms-surge.vercel.app",
+      link: "https://atoms-surge.vercel.app",
       description: "A browser-based chain reaction Multiplayer strategy game featuring mathematically-optimized AI that runs entirely client-side with zero server calls."
     },
     {
@@ -229,7 +229,7 @@ import {
     },
     {
       title: "Pixel Lens: Capture. Showcase. Inspire.",
-      link: "https://www.pixel-lens.netlify.app",
+      link: "https://pixel-lens.netlify.app",
       description: "A dedicated space for photographers—share the moments you poured your heart into capturing!"
     },
     {
