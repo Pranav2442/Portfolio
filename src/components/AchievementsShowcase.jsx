@@ -39,12 +39,6 @@ const AchievementsShowcase = () => {
         viewport={{ once: true }}
         className="relative"
       >
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-blue-500/20 blur-3xl -z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        />
 
         <motion.h2
           className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center"
