@@ -828,13 +828,7 @@ const Projects = () => {
         viewport={{ once: true }}
         className="relative"
       >
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-fuchsia-500/20 to-blue-500/20 blur-3xl -z-10"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1 }}
-        />
-
+        
         <motion.h2
           className="text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px] text-center"
           initial={{ opacity: 0, y: 20 }}
@@ -851,7 +845,7 @@ const Projects = () => {
           transition={{ delay: 0.2, duration: 0.6 }}
         >
           <p className="text-gray-300 text-sm sm:text-base">
-            Browse through my portfolio of projects or view them all at once
+            Swipe through my portfolio of projects or view them all at once
           </p>
         </motion.div>
 
