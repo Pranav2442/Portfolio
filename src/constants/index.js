@@ -168,6 +168,11 @@ import {
       description: "Bring your photos to life—turn any 2D image into a stunning 3D masterpiece!"
     },
     {
+      title: " SpaceTrek",
+      link: "https://www.spacetrekk.com",
+      description: "Void Voyager: An immersive 3D solar system explorer that brings the cosmos to life in your browser with stunning visuals and intuitive controls."
+    },
+    {
       title: "Air Cursor",
       link: "https://www.youtube.com/watch?v=yku03k24dVg",
       description: "Control your laptop with just a wave of your fingers—no touch needed!"
@@ -221,11 +226,6 @@ import {
       title: "Atoms: Surge",
       link: "https://atoms-surge.vercel.app",
       description: "A browser-based chain reaction Multiplayer strategy game featuring mathematically-optimized AI that runs entirely client-side with zero server calls."
-    },
-    {
-      title: " SpaceTrek",
-      link: "https://www.spacetrekk.com",
-      description: "Void Voyager: An immersive 3D solar system explorer that brings the cosmos to life in your browser with stunning visuals and intuitive controls."
     },
     {
       title: "Pixel Lens: Capture. Showcase. Inspire.",
