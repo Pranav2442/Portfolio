@@ -223,8 +223,8 @@ import {
       description: "A browser-based chain reaction Multiplayer strategy game featuring mathematically-optimized AI that runs entirely client-side with zero server calls."
     },
     {
-      title: "Void Voyager",
-      link: "https://void-voyager.vercel.app/",
+      title: " SpaceTrek",
+      link: "https://www.spacetrekk.com",
       description: "Void Voyager: An immersive 3D solar system explorer that brings the cosmos to life in your browser with stunning visuals and intuitive controls."
     },
     {
