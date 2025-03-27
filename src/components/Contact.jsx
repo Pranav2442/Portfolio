@@ -1,5 +1,5 @@
 import React from "react";
-import { Camera, Github, Linkedin, Mail, Youtube } from "lucide-react";
+import { Camera, Github, Linkedin, Mail, Youtube, Instagram } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Contact = () => {
@@ -29,6 +29,13 @@ const Contact = () => {
       name: "Pixel Lens",
       icon: Camera,
       link: "https://pixel-lens.netlify.app/",
+      gradientFrom: "from-blue-600",
+      gradientTo: "to-indigo-600",
+    },
+    {
+      name: "Pixel Lens",
+      icon: Instagram,
+      link: "https://www.instagram.com/pranav.dart/",
       gradientFrom: "from-blue-600",
       gradientTo: "to-indigo-600",
     },
